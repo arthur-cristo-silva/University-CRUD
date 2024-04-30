@@ -1,6 +1,5 @@
 package com.studentscrud.frames;
 
-import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import com.studentscrud.dao.StudentDAO;
 import com.studentscrud.objects.Student;
 
