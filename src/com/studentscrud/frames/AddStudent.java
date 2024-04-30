@@ -37,10 +37,10 @@ public class AddStudent extends JFrame {
 
     public AddStudent() {
         setContentPane(mainPanel);
-        setTitle("Add new student");
+        setTitle("Adicionar Novo Aluno");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(720, 720);
-        pack();
+        setSize(400, 350);
+        setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
         addBTN.addActionListener(new ActionListener() {
@@ -55,7 +55,7 @@ public class AddStudent extends JFrame {
                     Student student = new Student(name, ra, curso, horario, faltas);
                     StudentDAO studentDAO = new StudentDAO();
                     studentDAO.save(student);
-                    JOptionPane.showMessageDialog(mainPanel, "Student added!");
+                    JOptionPane.showMessageDialog(mainPanel, "Aluno adicionado!");
                     new MainFrame();
                     dispose();
                 } catch (NumberFormatException f) {
