@@ -8,7 +8,18 @@ public class Student {
     private String horario;
     private int faltas;
 
+    public Student() {}
+
     public Student(String name, String ra, String curso, String horario, int faltas) {
+        this.name = name;
+        this.ra = ra;
+        this.curso = curso;
+        this.horario = horario;
+        this.faltas = faltas;
+    }
+
+    public Student(Long id, String name, String ra, String curso, String horario, int faltas) {
+        this.id = id;
         this.name = name;
         this.ra = ra;
         this.curso = curso;
