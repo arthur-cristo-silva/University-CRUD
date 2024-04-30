@@ -4,7 +4,7 @@ CRUD de Alunos
 
 Interface gráfica que permite criar, ler, atualizar e remover alunos de forma agradável ao usuário.
 
-![print do programa](https://github.com/arthur-cristo-silva/University-CRUD/blob/main/src/com/studentscrud/prints/crudAlunos.png)
+![print do programa](https://github.com/arthur-cristo-silva/University-CRUD/blob/main/lib/crudAlunos.png)
 
 ## Tecnologias
 - Java 21
@@ -16,10 +16,10 @@ Interface gráfica que permite criar, ler, atualizar e remover alunos de forma a
 ```
 git clone https://github.com/arthur-cristo-silva/University-CRUD.git
 ```
-- Criar banco de dados e usário:
+- Criar banco de dados MySQL e usário:
 ```
-mysql> create database university;
-mysql> create user 'user'@'%' identified by '';
-mysql> grant all on university.* to 'user'@'%';
+create database university;
+create user 'user'@'%' identified by '';
+grant all on university.* to 'user'@'%';
 ```
 - Execute StudentsCrudUi.jar
