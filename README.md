@@ -8,8 +8,8 @@ Interface gráfica que permite criar, ler, atualizar e remover alunos de forma a
 
 ## Tecnologias
 - Java 21
-- Java Swing - Interface Gráfica
-- MySQL - Banco de Dados
+- Java Swing
+- MySQL
 
 ## Como executar
 - Clonar repositório git:
