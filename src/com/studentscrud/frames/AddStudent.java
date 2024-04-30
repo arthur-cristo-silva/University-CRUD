@@ -52,6 +52,9 @@ public class AddStudent extends JFrame {
                     curso = cursoInput.getText();
                     horario = horarioInput.getSelectedItem().toString();
                     faltas = Objects.equals(faltasInput.getText(), "") ? 0 : Integer.parseInt(faltasInput.getText());
+                    if (name.isEmpty() || ra.isEmpty() || curso.isEmpty() || horario.isEmpty()) {
+                        throw new Exception();
+                    }
                     Student student = new Student(name, ra, curso, horario, faltas);
                     StudentDAO studentDAO = new StudentDAO();
                     studentDAO.save(student);
@@ -61,7 +64,9 @@ public class AddStudent extends JFrame {
                 } catch (NumberFormatException f) {
                     JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em faltas.");
                 } catch (SQLException g) {
-                    JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas dados válidos.");
+                    JOptionPane.showMessageDialog(mainPanel, "Erro ao salvar aluno no banco de dados.");
+                } catch (Exception h) {
+                    JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
                 }
             }
         });

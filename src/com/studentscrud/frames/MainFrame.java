@@ -54,6 +54,7 @@ public class MainFrame extends JFrame {
                     dispose();
                 } catch (ArrayIndexOutOfBoundsException f) {
                     JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
+                    getAll();
                 }
             }
         });

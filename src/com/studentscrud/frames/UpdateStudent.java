@@ -67,6 +67,9 @@ public class UpdateStudent  extends JFrame {
                     String cursoIN = cursoInput.getText();
                     String horarioIN = horarioInput.getSelectedItem().toString();
                     int faltasIN = Objects.equals(faltasInput.getText(), "") ? 0 : Integer.parseInt(faltasInput.getText());
+                    if (nameIN.isEmpty() || raIN.isEmpty() || cursoIN.isEmpty() || horarioIN.isEmpty()) {
+                        throw new Exception();
+                    }
                     Student student = new Student(idIN, nameIN, raIN, cursoIN, horarioIN, faltasIN);
                     StudentDAO studentDAO = new StudentDAO();
                     studentDAO.update(student);
@@ -75,8 +78,10 @@ public class UpdateStudent  extends JFrame {
                     dispose();
                 } catch (NumberFormatException f) {
                     JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em faltas.");
-                } catch (Exception g) {
-                    JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas dados válidos.");
+                } catch (SQLException g) {
+                    JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar aluno no banco de dados.");
+                } catch (Exception h) {
+                    JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
                 }
             }
         });
