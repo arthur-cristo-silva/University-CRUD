@@ -1,69 +1,37 @@
 package com.studentscrud.objects;
 
 public class Student {
-    private Long id;
+    private Long ra;
     private String name;
-    private String ra;
-    private String curso;
-    private String horario;
-    private int faltas;
+    private int age;
+    private String course;
+    private String schedule;
+    private int absences;
 
     public Student() {}
 
-    public Student(String name, String ra, String curso, String horario, int faltas) {
+    public Student(String name, int age, String course, String schedule, int absences) {
         this.name = name;
-        this.ra = ra;
-        this.curso = curso;
-        this.horario = horario;
-        this.faltas = faltas;
+        this.age = age;
+        this.course = course;
+        this.schedule = schedule;
+        this.absences = absences;
     }
 
-    public Student(Long id, String name, String ra, String curso, String horario, int faltas) {
-        this.id = id;
+    public Student(Long ra, String name, int age, String course, String schedule, int absences) {
+        this.ra = ra;
         this.name = name;
-        this.ra = ra;
-        this.curso = curso;
-        this.horario = horario;
-        this.faltas = faltas;
+        this.age = age;
+        this.course = course;
+        this.schedule = schedule;
+        this.absences = absences;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getFaltas() {
-        return faltas;
-    }
-
-    public void setFaltas(int faltas) {
-        this.faltas = faltas;
-    }
-
-    public String getHorario() {
-        return horario;
-    }
-
-    public void setHorario(String horario) {
-        this.horario = horario;
-    }
-
-    public String getCurso() {
-        return curso;
-    }
-
-    public void setCurso(String curso) {
-        this.curso = curso;
-    }
-
-    public String getRa() {
+    public Long getRa() {
         return ra;
     }
 
-    public void setRa(String ra) {
+    public void setRa(Long ra) {
         this.ra = ra;
     }
 
@@ -73,5 +41,37 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public int getAbsences() {
+        return absences;
+    }
+
+    public void setAbsences(int absences) {
+        this.absences = absences;
     }
 }

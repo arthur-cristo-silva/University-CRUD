@@ -2,6 +2,7 @@ package com.studentscrud.factory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 
 public class ConnectionFactory {
 
@@ -10,16 +11,6 @@ public class ConnectionFactory {
     private static final String URL = "jdbc:mysql://localhost:3306/university";
 
     public static Connection createConnectionToMySQL() throws Exception {
-        Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        return connection;
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
-
-    public static void main(String[] args) throws Exception {
-        Connection con = createConnectionToMySQL();
-        if (con != null) {
-            System.out.println("Conexão com sucesso");
-            con.close();
-        }
-    }
-
 }

@@ -14,31 +14,31 @@ public class AddStudent extends JFrame {
     // Elements
     private JLabel titleTXT;
     private JTextField nameInput;
-    private JTextField raInput;
-    private JTextField faltasInput;
-    private JComboBox horarioInput;
-    private JTextField cursoInput;
+    private JTextField ageInput;
+    private JTextField absencesInput;
+    private JComboBox scheduleInput;
+    private JTextField courseInput;
     private JLabel nameTXT;
-    private JLabel cursoTXT;
-    private JLabel raTXT;
-    private JLabel horarioTXT;
-    private JLabel faltasTXT;
+    private JLabel courseTXT;
+    private JLabel ageTXT;
+    private JLabel scheduleTXT;
+    private JLabel absencesTXT;
     private JButton addBTN;
     private JButton backButton;
     private JPanel mainPanel;
 
     // Variables
     private String name;
-    private String ra;
-    private String curso;
-    private String horario;
-    private int faltas;
+    private int age;
+    private String course;
+    private String schedule;
+    private int absences;
 
     public AddStudent() {
         setContentPane(mainPanel);
         setTitle("Adicionar Novo Aluno");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400, 350);
+        setSize(480, 400);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -47,73 +47,30 @@ public class AddStudent extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     name = nameInput.getText();
-                    ra = raInput.getText();
-                    curso = cursoInput.getText();
-                    horario = horarioInput.getSelectedItem().toString();
-                    faltas = Objects.equals(faltasInput.getText(), "") ? 0 : Integer.parseInt(faltasInput.getText());
-                    if (name.isEmpty() || ra.isEmpty() || curso.isEmpty() || horario.isEmpty()) {
+                    age = Objects.equals(ageInput.getText(), "") ? 0 : Integer.parseInt(ageInput.getText());
+                    course = courseInput.getText();
+                    schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
+                    absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
+                    if (name.isEmpty() || age == 0 || course.isEmpty() || schedule.isEmpty()) {
                         throw new Exception();
                     }
-                    Student student = new Student(name, ra, curso, horario, faltas);
+                    Student student = new Student(name, age, course, schedule, absences);
                     StudentDAO studentDAO = new StudentDAO();
                     studentDAO.save(student);
                     JOptionPane.showMessageDialog(mainPanel, "Aluno adicionado!");
-                    new MainFrame();
+                    new StudentsFrame();
                     dispose();
-                } catch (NumberFormatException f) {
-                    JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em faltas.");
                 } catch (SQLException g) {
                     JOptionPane.showMessageDialog(mainPanel, "Erro ao salvar aluno no banco de dados.");
                 } catch (Exception h) {
                     JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
+                    throw new RuntimeException(h);
                 }
             }
         });
         backButton.addActionListener(e -> {
-            new MainFrame();
+            new StudentsFrame();
             dispose();
         });
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRa() {
-        return ra;
-    }
-
-    public void setRa(String ra) {
-        this.ra = ra;
-    }
-
-    public String getCurso() {
-        return curso;
-    }
-
-    public void setCurso(String curso) {
-        this.curso = curso;
-    }
-
-    public String getHorario() {
-        return horario;
-    }
-
-    public void setHorario(String horario) {
-        this.horario = horario;
-    }
-
-    public int getFaltas() {
-        return faltas;
-    }
-
-    public void setFaltas(int faltas) {
-        this.faltas = faltas;
     }
 }
