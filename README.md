@@ -1,11 +1,11 @@
 <h1 align="center">University CRUD</h1>
-<p align="center">
-Este projeto consiste em um CRUD que gerencia professores e alunos em um banco de dados MySQL através de uma interface gráfica amigável ao usuário.
-</p>
 
-![crud de alunos](https://github.com/arthur-cristo-silva/University-CRUD/blob/main/lib/crudAlunos.gif)
+<div align="center">
+<p align="center">Este projeto consiste em um CRUD que gerencia professores e alunos em um banco de dados MySQL através de uma interface gráfica amigável ao usuário.</p>
+<img src="https://github.com/arthur-cristo-silva/University-CRUD/blob/main/lib/crudAlunos.gif">
+</div>
 
-## Como executar
+<h2 align=center>Como executar</h2>
 - Configurar o MySQL:
 ```
 create database if not exists university;
