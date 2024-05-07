@@ -8,7 +8,7 @@
 <h2 align=center>
 Como Executar</h2>
 
-- Configurar o MySQL:
+### Configurar o MySQL:
 ```
 create database if not exists university;
 create user if not exists 'user'@'%' identified by '';
@@ -28,4 +28,4 @@ create table if not exists professors (
     email    varchar(100),
     workload varchar(2)) auto_increment = 200;
 ```
-- Baixar e executar [University.jar](https://github.com/arthur-cristo-silva/university-crud/blob/main/University.jar)
+### Baixar e executar [University.jar](https://github.com/arthur-cristo-silva/university-crud/blob/main/University.jar)
