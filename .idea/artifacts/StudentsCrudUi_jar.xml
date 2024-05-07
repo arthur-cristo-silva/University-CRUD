@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="StudentsCrudUi:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/StudentsCrudUi_jar</output-path>
-    <root id="archive" name="StudentsCrudUi.jar">
-      <element id="module-output" name="StudentsCrudUi" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/mysql-connector-j-8.3.0.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>

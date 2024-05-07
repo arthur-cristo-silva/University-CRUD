@@ -10,7 +10,7 @@ create table if not exists students
     course   varchar(100),
     schedule varchar(5),
     absences int(11)
-) auto_increment = 11111111;
+) auto_increment = 100;
 create table if not exists professors
 (
     ra       bigint not null primary key auto_increment,
@@ -18,4 +18,4 @@ create table if not exists professors
     age      varchar(3),
     email    varchar(100),
     workload varchar(2)
-) auto_increment = 77777777;
+) auto_increment = 200;
