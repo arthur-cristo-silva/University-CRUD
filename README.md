@@ -1,21 +1,11 @@
-<h1 align="center">
-CRUD de Alunos
-</h1>
+<h1 align="center">University CRUD</h1>
+<p align="center">
+Este projeto consiste em um CRUD que gerencia professores e alunos em um banco de dados MySQL através de uma interface gráfica amigável ao usuário.
+</p>
 
-Interface gráfica que permite criar, ler, atualizar e remover alunos de forma agradável ao usuário.
-
-![crud de alunos](https://github.com/arthur-cristo-silva/University-CRUD/blob/main/lib/crudAlunos.png)
-
-## Tecnologias
-- Java 21
-- Java Swing
-- MySQL Connector
+![crud de alunos](https://github.com/arthur-cristo-silva/University-CRUD/blob/main/lib/crudAlunos.gif)
 
 ## Como executar
-- Clonar repositório git:
-```
-git clone https://github.com/arthur-cristo-silva/University-CRUD.git
-```
 - Configurar o MySQL:
 ```
 create database if not exists university;
@@ -36,4 +26,4 @@ create table if not exists professors (
     email    varchar(100),
     workload varchar(2)) auto_increment = 200;
 ```
-- Execute University.jar
+- Baixar e executar University.jar
