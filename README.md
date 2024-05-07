@@ -5,7 +5,9 @@
 <img src="https://github.com/arthur-cristo-silva/University-CRUD/blob/main/lib/crudAlunos.gif">
 </div>
 
-<h2 align=center>Como executar</h2>
+<h2 align=center>
+Como Executar</h2>
+
 - Configurar o MySQL:
 ```
 create database if not exists university;
@@ -26,4 +28,4 @@ create table if not exists professors (
     email    varchar(100),
     workload varchar(2)) auto_increment = 200;
 ```
-- Baixar e executar University.jar
+- Baixar e executar [University.jar](https://github.com/arthur-cristo-silva/university-crud/blob/main/University.jar)
