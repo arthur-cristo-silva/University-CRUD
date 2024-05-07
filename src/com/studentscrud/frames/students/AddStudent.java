@@ -1,4 +1,4 @@
-package com.studentscrud.frames;
+package com.studentscrud.frames.students;
 
 import com.studentscrud.dao.StudentDAO;
 import com.studentscrud.objects.Student;
@@ -27,13 +27,6 @@ public class AddStudent extends JFrame {
     private JButton backButton;
     private JPanel mainPanel;
 
-    // Variables
-    private String name;
-    private int age;
-    private String course;
-    private String schedule;
-    private int absences;
-
     public AddStudent() {
         setContentPane(mainPanel);
         setTitle("Adicionar Novo Aluno");
@@ -46,11 +39,11 @@ public class AddStudent extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    name = nameInput.getText();
-                    age = Objects.equals(ageInput.getText(), "") ? 0 : Integer.parseInt(ageInput.getText());
-                    course = courseInput.getText();
-                    schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
-                    absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
+                    String name = nameInput.getText();
+                    int age = Objects.equals(ageInput.getText(), "") ? 0 : Integer.parseInt(ageInput.getText());
+                    String course = courseInput.getText();
+                    String schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
+                    int absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
                     if (name.isEmpty() || age == 0 || course.isEmpty() || schedule.isEmpty()) {
                         throw new Exception();
                     }
