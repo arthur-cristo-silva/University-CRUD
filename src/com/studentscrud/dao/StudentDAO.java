@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDAO {
+public class StudentDAO implements DAO<Student> {
 
+    @Override
     public void save(Student student) throws SQLException {
         String sql = "INSERT INTO students(name, age, course, schedule, absences) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -26,10 +27,12 @@ public class StudentDAO {
         }
     }
 
+    @Override
     public List<Student> findAll() throws SQLException {
         List<Student> students = new ArrayList<Student>();
         String sql = "SELECT * FROM students";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+             PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Student student = new Student();
                 student.setRa(rs.getLong("ra"));
@@ -46,6 +49,7 @@ public class StudentDAO {
         return students;
     }
 
+    @Override
     public Student findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Student studentID = new Student();
@@ -70,6 +74,7 @@ public class StudentDAO {
         return studentID;
     }
 
+    @Override
     public void update(Student student) throws SQLException {
         String sql = "UPDATE students SET  name = ?, age = ?, course = ?, schedule = ?, absences = ? WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -85,6 +90,7 @@ public class StudentDAO {
         }
     }
 
+    @Override
     public void delete(Long ra) throws SQLException {
         String sql = "DELETE FROM students WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
