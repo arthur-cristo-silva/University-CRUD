@@ -1,5 +1,8 @@
 package com.studentscrud.frames;
 
+import com.studentscrud.frames.professors.ProfessorsFrame;
+import com.studentscrud.frames.students.StudentsFrame;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +25,13 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new StudentsFrame();
+                dispose();
+            }
+        });
+        professorBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ProfessorsFrame();
                 dispose();
             }
         });
