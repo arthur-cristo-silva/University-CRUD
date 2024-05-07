@@ -1,4 +1,4 @@
-package com.studentscrud.frames;
+package com.studentscrud.frames.students;
 
 import com.studentscrud.dao.StudentDAO;
 import com.studentscrud.objects.Student;
