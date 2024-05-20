@@ -13,5 +13,5 @@ public interface DAO<T> {
 
     public void update(T t) throws SQLException;
 
-    public void delete(Long ra) throws SQLException;
+    public void delete(long ra) throws SQLException;
 }

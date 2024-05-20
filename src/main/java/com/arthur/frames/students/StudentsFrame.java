@@ -24,6 +24,7 @@ public class StudentsFrame extends JFrame {
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
+    // Janela para gerenciar alunos
     public StudentsFrame() {
         setContentPane(mainPanel);
         setTitle("Alunos");
@@ -33,30 +34,35 @@ public class StudentsFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         getAll();
+        // Vai para janela de criação de aluno
         addBTN.addActionListener(e -> {
             new AddStudent();
             dispose();
         });
+        // Vai para janela de atualização de aluno
         updateBTN.addActionListener(e -> {
             try {
-                getAll();
-                Long ra = Long.valueOf(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
+                long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
                 String name = table1.getModel().getValueAt(table1.getSelectedRow(), 1).toString();
                 String course = table1.getModel().getValueAt(table1.getSelectedRow(), 2).toString();
-                int period = Integer.parseInt(table1.getModel().getValueAt(table1.getSelectedRow(), 3).toString());
-                String schedule = table1.getModel().getValueAt(table1.getSelectedRow(), 4).toString();
-                int absences = Integer.parseInt(table1.getModel().getValueAt(table1.getSelectedRow(), 5).toString());
-                new UpdateStudent(ra, name, course, period, schedule, absences);
+                new UpdateStudent(ra, name, course);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
+                System.out.println(f);
                 getAll();
             }
         });
+        // Deleta do banco de dados aluno selecionado
         deleteBTN.addActionListener(e -> {
             try {
                 Long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
-                new StudentDAO().delete(ra);
+                // Confirma se o usuário realmente deseja remover o cadastro do aluno.
+                int result = JOptionPane.showConfirmDialog (mainPanel,
+                        "Você deseja realmente remover o cadastro do aluno de RA: "+ra+"?",null, JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.YES_OPTION){
+                    new StudentDAO().delete(ra);
+                }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             } catch (ArrayIndexOutOfBoundsException f) {
@@ -65,6 +71,7 @@ public class StudentsFrame extends JFrame {
                 getAll();
             }
         });
+        // Pesquisa por aluno pelo seu RA
         searchBTN.addActionListener(e -> {
             Object[][] data = null;
             String[] col = null;
@@ -96,12 +103,14 @@ public class StudentsFrame extends JFrame {
                 raInput.setText("");
             }
         });
+        // Volta para a janela anterior
         backBTN.addActionListener(e -> {
             new MainFrame();
             dispose();
         });
     }
 
+    // Exibe todos os alunos
     private void getAll() {
         Object[][] data = null;
         String[] col = null;

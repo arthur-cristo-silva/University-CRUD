@@ -2,6 +2,7 @@ package com.arthur.frames.students;
 
 import com.arthur.dao.StudentDAO;
 import com.arthur.entity.Student;
+import com.arthur.frames.professors.ProfessorsFrame;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -9,7 +10,7 @@ import java.util.Objects;
 
 public class UpdateStudent  extends JFrame {
 
-    // Elements
+    // Elementos da janela
     private JLabel titleTXT;
     private JTextField nameInput;
     private JTextField periodInput;
@@ -25,7 +26,8 @@ public class UpdateStudent  extends JFrame {
     private JLabel faltasTXT;
     private JLabel periodTXT;
 
-    public UpdateStudent(Long ra, String name, String course, int period, String schedule, int absences) {
+    // Atualiza informações de estudante do banco de dados
+    public UpdateStudent(Long ra, String name, String course) {
         setContentPane(mainPanel);
         setTitle("Atualizar Aluno");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,11 +35,9 @@ public class UpdateStudent  extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
+        // Preenche nos inputs o nome e curso do aluno
         nameInput.setText(name);
         courseInput.setText(course);
-        periodInput.setText(String.valueOf(period));
-        scheduleInput.setSelectedItem(schedule);
-        absencesInput.setText(String.valueOf(absences));
         addBTN.addActionListener(e -> {
             try {
                 Student student = getStudent(ra);
@@ -53,13 +53,15 @@ public class UpdateStudent  extends JFrame {
                 throw new RuntimeException(h);
             }
         });
+        // Volta para janela anterior
         backButton.addActionListener(e -> {
-            new StudentsFrame();
+            new ProfessorsFrame();
             dispose();
         });
     }
 
-    private Student getStudent(Long ra) throws Exception {
+    // Metodo para colher informações do aluno
+    private Student getStudent(long ra) throws Exception {
         String name = nameInput.getText();
         int period = Objects.equals(periodInput.getText(), "") ? 1 : Integer.parseInt(periodInput.getText());
         if (period == 0) {

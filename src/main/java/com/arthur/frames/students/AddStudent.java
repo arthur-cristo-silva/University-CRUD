@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class AddStudent  extends JFrame {
 
-    // Elements
+    // Elementos da janela
     private JLabel titleTXT;
     private JTextField nameInput;
     private JTextField periodInput;
@@ -25,6 +25,7 @@ public class AddStudent  extends JFrame {
     private JLabel horarioTXT;
     private JLabel faltasTXT;
 
+    // Cria novo aluno no banco de dados
     public AddStudent() {
         setContentPane(mainPanel);
         setTitle("Atualizar Aluno");
@@ -37,7 +38,7 @@ public class AddStudent  extends JFrame {
             try {
                 Student student = getStudent();
                 new StudentDAO().save(student);
-                JOptionPane.showMessageDialog(mainPanel, "Aluno atualizado!");
+                JOptionPane.showMessageDialog(mainPanel, "Aluno adicionado!");
                 new StudentsFrame();
                 dispose();
             } catch (SQLException g) {
@@ -47,12 +48,14 @@ public class AddStudent  extends JFrame {
                 throw new RuntimeException(h);
             }
         });
+        // Volta para a janela anterior
         backButton.addActionListener(e -> {
             new StudentsFrame();
             dispose();
         });
     }
 
+    // Metodo para colher informações do aluno
     private Student getStudent() throws Exception {
         String name = nameInput.getText();
         int period = Objects.equals(periodInput.getText(), "") ? 1 : Integer.parseInt(periodInput.getText());

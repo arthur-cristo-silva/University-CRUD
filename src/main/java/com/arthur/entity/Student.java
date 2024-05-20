@@ -1,6 +1,6 @@
 package com.arthur.entity;
 
-public class Student {
+public class Student extends Person {
     private Long ra;
     private String name;
     private String course;

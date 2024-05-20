@@ -14,7 +14,7 @@ public class ProfessorDAO implements DAO<Professor> {
 
     @Override
     public void save(Professor professor) throws SQLException {
-        String sql = "INSERT INTO professors(name, age, email, workload) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO professors(name, phoneNumber, email, workload) VALUES(?,?,?,?)";
         try(Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, professor.getName());
             ps.setString(2, professor.getPhoneNumber());
@@ -73,7 +73,7 @@ public class ProfessorDAO implements DAO<Professor> {
 
     @Override
     public void update(Professor professor) throws SQLException {
-        String sql = "UPDATE professors SET name = ?, age = ?, email = ?, workload = ? WHERE ra = ?";
+        String sql = "UPDATE professors SET name = ?, phoneNumber = ?, email = ?, workload = ? WHERE ra = ?";
         try(Connection conn = ConnectionFactory.createConnectionToMySQL();
         PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, professor.getName());
@@ -88,7 +88,7 @@ public class ProfessorDAO implements DAO<Professor> {
     }
 
     @Override
-    public void delete(Long ra) throws SQLException {
+    public void delete(long ra) throws SQLException {
         String sql = "DELETE FROM professors WHERE ra = ?";
         try(Connection conn = ConnectionFactory.createConnectionToMySQL();
         PreparedStatement ps = conn.prepareStatement(sql)) {

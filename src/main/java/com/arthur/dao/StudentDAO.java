@@ -12,6 +12,7 @@ import java.util.List;
 
 public class StudentDAO implements DAO<Student> {
 
+    // Cadastra novo aluno no banco de dados
     @Override
     public void save(Student student) throws SQLException {
         String sql = "INSERT INTO students(name, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
@@ -27,6 +28,7 @@ public class StudentDAO implements DAO<Student> {
         }
     }
 
+    // Retorna todos os alunos cadastrados
     @Override
     public List<Student> findAll() throws SQLException {
         List<Student> students = new ArrayList<Student>();
@@ -49,6 +51,7 @@ public class StudentDAO implements DAO<Student> {
         return students;
     }
 
+    // Procura por aluno pelo seu RA
     @Override
     public Student findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
@@ -74,6 +77,7 @@ public class StudentDAO implements DAO<Student> {
         return studentID;
     }
 
+    // Atualiza aluno no banco de dados
     @Override
     public void update(Student student) throws SQLException {
         String sql = "UPDATE students SET  name = ?, course = ?, periods = ?, schedule = ?, absences = ? WHERE ra = ?";
@@ -90,8 +94,9 @@ public class StudentDAO implements DAO<Student> {
         }
     }
 
+    // Remove aluno do banco de dados pelo seu RA
     @Override
-    public void delete(Long ra) throws SQLException {
+    public void delete(long ra) throws SQLException {
         String sql = "DELETE FROM students WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, ra);
@@ -100,7 +105,5 @@ public class StudentDAO implements DAO<Student> {
             throw new RuntimeException(e);
         }
     }
-
-
 }
 

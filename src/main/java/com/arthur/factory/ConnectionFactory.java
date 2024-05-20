@@ -9,7 +9,7 @@ public class ConnectionFactory {
     private static final String PASSWORD = "";
     private static final String URL = "jdbc:mysql://localhost:3306/university";
 
-
+    // Cria conexão com o banco de dados
     public static Connection createConnectionToMySQL() throws Exception {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
