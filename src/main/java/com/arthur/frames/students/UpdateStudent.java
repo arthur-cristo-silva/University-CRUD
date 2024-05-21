@@ -55,7 +55,7 @@ public class UpdateStudent  extends JFrame {
         });
         // Volta para janela anterior
         backButton.addActionListener(e -> {
-            new ProfessorsFrame();
+            new StudentsFrame();
             dispose();
         });
     }

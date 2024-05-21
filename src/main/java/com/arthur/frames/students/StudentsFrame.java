@@ -49,8 +49,8 @@ public class StudentsFrame extends JFrame {
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
-                System.out.println(f);
                 getAll();
+                throw new RuntimeException(f);
             }
         });
         // Deleta do banco de dados aluno selecionado

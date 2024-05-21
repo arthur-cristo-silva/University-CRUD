@@ -23,6 +23,7 @@ public class AddProfessor extends JFrame {
     private JButton backButton;
     private JPanel mainPanel;
 
+    // Cadastra novo professor no banco de dados
     public AddProfessor() {
         setContentPane(mainPanel);
         setTitle("Atualizar Professor");
@@ -31,11 +32,12 @@ public class AddProfessor extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
+        // Cadastra novo professor
         addBTN.addActionListener(e -> {
             try {
                 Professor professor = getProfessor();
                 new ProfessorDAO().save(professor);
-                JOptionPane.showMessageDialog(mainPanel, "Professor atualizado!");
+                JOptionPane.showMessageDialog(mainPanel, "Professor cadastrado!");
                 new ProfessorsFrame();
                 dispose();
             } catch (SQLException g) {
@@ -45,12 +47,14 @@ public class AddProfessor extends JFrame {
                 throw new RuntimeException(h);
             }
         });
+        // Volta para janela anterior
         backButton.addActionListener(e -> {
             new ProfessorsFrame();
             dispose();
         });
     }
 
+    // Recolhe informações e retornar um objeto de professor
     private Professor getProfessor() throws Exception {
         String name = nameInput.getText();
         String phoneNumber = phoneNumberInput.getText();

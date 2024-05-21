@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class UpdateProfessor extends JFrame {
 
-    // Elements
+    // Elementos da janela
     private JLabel titleTXT;
     private JLabel nameTXT;
     private JTextField nameInput;
@@ -23,7 +23,8 @@ public class UpdateProfessor extends JFrame {
     private JButton backButton;
     private JPanel mainPanel;
 
-    public UpdateProfessor(Long ra, String name, String phoneNumber, String email, int workload) {
+    // Janela para atualizar professor
+    public UpdateProfessor(Long ra, String name, String email) {
         setContentPane(mainPanel);
         setTitle("Atualizar Professor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,9 +33,7 @@ public class UpdateProfessor extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         nameInput.setText(name);
-        phoneNumberInput.setText(phoneNumber);
         emailInput.setText(email);
-        workloadInput.setText(String.valueOf(workload));
         addBTN.addActionListener(e -> {
             try {
                 Professor professor = getProfessor(ra);
@@ -49,12 +48,14 @@ public class UpdateProfessor extends JFrame {
                 throw new RuntimeException(h);
             }
         });
+        // Voltar para janela anterior
         backButton.addActionListener(e -> {
             new ProfessorsFrame();
             dispose();
         });
     }
 
+    // Recolhe informações e retornar um objeto de professor
     private Professor getProfessor(Long ra) throws Exception {
         String name = nameInput.getText();
         String phoneNumber = phoneNumberInput.getText();
