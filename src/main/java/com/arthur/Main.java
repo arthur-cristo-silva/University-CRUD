@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Programa {
+public class Main {
     public static void main(String[] args) {
 
         String peopleTableSql = """
