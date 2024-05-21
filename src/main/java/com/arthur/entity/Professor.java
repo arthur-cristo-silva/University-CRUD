@@ -1,5 +1,7 @@
 package com.arthur.entity;
 
+import java.util.Comparator;
+
 public class Professor extends Person {
     private Long ra;
     private String name;
@@ -64,4 +66,11 @@ public class Professor extends Person {
     public void setWorkload(Integer workload) {
         this.workload = workload;
     }
+
+    public static Comparator<Professor> comparator = (s1, s2) -> {
+        String firstName = s1.getName().toUpperCase();
+        String secondName = s2.getName().toUpperCase();
+        return firstName.compareTo(secondName);
+    };
+
 }

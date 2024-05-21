@@ -1,12 +1,16 @@
 package com.arthur.frames.students;
 
 import com.arthur.dao.StudentDAO;
+import com.arthur.factory.RandomStudent;
 import com.arthur.frames.MainFrame;
 import com.arthur.entity.Student;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 public class StudentsFrame extends JFrame {
@@ -21,6 +25,9 @@ public class StudentsFrame extends JFrame {
     private JScrollPane jScroll;
     private JTextField raInput;
     private JButton backBTN;
+    private JComboBox sortedComboBox;
+    private JButton getAllBTN;
+    private JButton randomBTN;
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
@@ -56,7 +63,7 @@ public class StudentsFrame extends JFrame {
         // Deleta do banco de dados aluno selecionado
         deleteBTN.addActionListener(e -> {
             try {
-                Long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
+                long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
                 // Confirma se o usuário realmente deseja remover o cadastro do aluno.
                 int result = JOptionPane.showConfirmDialog (mainPanel,
                         "Você deseja realmente remover o cadastro do aluno de RA: "+ra+"?",null, JOptionPane.YES_NO_OPTION);
@@ -108,6 +115,20 @@ public class StudentsFrame extends JFrame {
             new MainFrame();
             dispose();
         });
+        getAllBTN.addActionListener(e -> {
+            getAll();
+        });
+        randomBTN.addActionListener(e -> {
+                try {
+                    new StudentDAO().save(RandomStudent.getStudent());
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            getAll();
+        });
+        sortedComboBox.addActionListener(e -> {
+            getAll();
+        });
     }
 
     // Exibe todos os alunos
@@ -116,6 +137,9 @@ public class StudentsFrame extends JFrame {
         String[] col = null;
         try {
             List<Student> students = new StudentDAO().findAll();
+            if (sortedComboBox.getSelectedIndex() == 1) {
+                students.sort(Student.comparator);
+            }
             col = new String[]{"RA", "Nome", "Curso"};
             data = new Object[students.size()][col.length];
             for (int i = 0; i < students.size(); i++) {

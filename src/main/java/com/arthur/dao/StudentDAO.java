@@ -3,10 +3,7 @@ package com.arthur.dao;
 import com.arthur.factory.ConnectionFactory;
 import com.arthur.entity.Student;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +12,22 @@ public class StudentDAO implements DAO<Student> {
     // Cadastra novo aluno no banco de dados
     @Override
     public void save(Student student) throws SQLException {
-        String sql = "INSERT INTO students(name, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, student.getName());
-            ps.setString(2, student.getCourse());
-            ps.setInt(3, student.getPeriod());
-            ps.setString(4, student.getSchedule());
-            ps.setInt(5, student.getAbsences());
-            ps.executeUpdate();
+        String personSql = "INSERT INTO people(name, type) VALUES(?, 'student')";
+        String studentSql = "INSERT INTO students(ra, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+             PreparedStatement personPs = conn.prepareStatement(personSql, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement studentPs = conn.prepareStatement(studentSql)) {
+            personPs.setString(1, student.getName());
+            personPs.executeUpdate();
+            ResultSet rs = personPs.getGeneratedKeys();
+            if (rs.next()) {
+                studentPs.setLong(1, rs.getLong(1));
+                studentPs.setString(2, student.getCourse());
+                studentPs.setInt(3, student.getPeriod());
+                studentPs.setString(4, student.getSchedule());
+                studentPs.setInt(5, student.getAbsences());
+                studentPs.executeUpdate();
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -31,8 +36,10 @@ public class StudentDAO implements DAO<Student> {
     // Retorna todos os alunos cadastrados
     @Override
     public List<Student> findAll() throws SQLException {
-        List<Student> students = new ArrayList<Student>();
-        String sql = "SELECT * FROM students";
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
+                "FROM students AS s "+
+                "INNER JOIN people as pe ON s.ra = pe.ra";
         try (Connection conn = ConnectionFactory.createConnectionToMySQL();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -55,18 +62,21 @@ public class StudentDAO implements DAO<Student> {
     @Override
     public Student findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
-        Student studentID = new Student();
-        String sql = "select * from students where ra = ?";
+        Student student = new Student();
+        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
+                "FROM students AS s "+
+                "INNER JOIN people AS pe ON s.ra = pe.ra "+
+                "WHERE s.ra = ?";
         try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, Long.parseLong(ra));
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    studentID.setRa(rs.getLong("ra"));
-                    studentID.setName(rs.getString("name"));
-                    studentID.setCourse(rs.getString("course"));
-                    studentID.setPeriod(rs.getInt("periods"));
-                    studentID.setSchedule(rs.getString("schedule"));
-                    studentID.setAbsences(rs.getInt("absences"));
+                    student.setRa(rs.getLong("ra"));
+                    student.setName(rs.getString("name"));
+                    student.setCourse(rs.getString("course"));
+                    student.setPeriod(rs.getInt("periods"));
+                    student.setSchedule(rs.getString("schedule"));
+                    student.setAbsences(rs.getInt("absences"));
                 }
             }
         } catch (NumberFormatException e) {
@@ -74,21 +84,26 @@ public class StudentDAO implements DAO<Student> {
         } catch (Exception f) {
             throw new RuntimeException(f);
         }
-        return studentID;
+        return student;
     }
 
     // Atualiza aluno no banco de dados
     @Override
     public void update(Student student) throws SQLException {
-        String sql = "UPDATE students SET  name = ?, course = ?, periods = ?, schedule = ?, absences = ? WHERE ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, student.getName());
-            ps.setString(2, student.getCourse());
-            ps.setInt(3, student.getPeriod());
-            ps.setString(4, student.getSchedule());
-            ps.setInt(5, student.getAbsences());
-            ps.setLong(6, student.getRa());
-            ps.executeUpdate();
+        String personSql = "UPDATE people SET name = ? WHERE ra = ?";
+        String studentSql = "UPDATE students SET course = ?, periods = ?, schedule = ?, absences = ? WHERE ra = ?";
+        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+             PreparedStatement personPs = conn.prepareStatement(personSql);
+             PreparedStatement studentPs = conn.prepareStatement(studentSql)) {
+            personPs.setString(1, student.getName());
+            personPs.setLong(2, student.getRa());
+            personPs.executeUpdate();
+            studentPs.setString(1, student.getCourse());
+            studentPs.setInt(2, student.getPeriod());
+            studentPs.setString(3, student.getSchedule());
+            studentPs.setInt(4, student.getAbsences());
+            studentPs.setLong(5, student.getRa());
+            studentPs.executeUpdate();
         } catch (Exception f) {
             throw new RuntimeException(f);
         }
@@ -97,10 +112,15 @@ public class StudentDAO implements DAO<Student> {
     // Remove aluno do banco de dados pelo seu RA
     @Override
     public void delete(long ra) throws SQLException {
-        String sql = "DELETE FROM students WHERE ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, ra);
-            ps.executeUpdate();
+        String studentSql = "DELETE FROM students WHERE ra = ?";
+        String personSql = "DELETE FROM people WHERE ra = ?";
+        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+             PreparedStatement personPs = conn.prepareStatement(personSql);
+             PreparedStatement studentPs = conn.prepareStatement(studentSql)) {
+            personPs.setLong(1, ra);
+            studentPs.setLong(1, ra);
+            studentPs.executeUpdate();
+            personPs.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

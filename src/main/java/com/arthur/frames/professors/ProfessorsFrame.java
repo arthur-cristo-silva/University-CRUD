@@ -1,6 +1,10 @@
 package com.arthur.frames.professors;
 
 import com.arthur.dao.ProfessorDAO;
+import com.arthur.dao.StudentDAO;
+import com.arthur.entity.Student;
+import com.arthur.factory.RandomProfessor;
+import com.arthur.factory.RandomStudent;
 import com.arthur.frames.MainFrame;
 import com.arthur.entity.Professor;
 
@@ -23,6 +27,9 @@ public class ProfessorsFrame extends JFrame {
     private JScrollPane jScroll;
     private JTextField raInput;
     private JButton backBTN;
+    private JButton getAllBTN;
+    private JButton randomBTN;
+    private JComboBox sortedComboBox;
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
@@ -59,9 +66,9 @@ public class ProfessorsFrame extends JFrame {
             try {
                 long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
                 // Confirma se o usuário realmente deseja remover o cadastro do aluno.
-                int result = JOptionPane.showConfirmDialog (mainPanel,
-                        "Você deseja realmente remover o cadastro do aluno de RA: "+ra+"?",null, JOptionPane.YES_NO_OPTION);
-                if(result == JOptionPane.YES_OPTION) {
+                int result = JOptionPane.showConfirmDialog(mainPanel,
+                        "Você deseja realmente remover o cadastro do aluno de RA: " + ra + "?", null, JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
                     new ProfessorDAO().delete(ra);
                 }
             } catch (SQLException ex) {
@@ -108,6 +115,20 @@ public class ProfessorsFrame extends JFrame {
             new MainFrame();
             dispose();
         });
+        getAllBTN.addActionListener(e -> {
+            getAll();
+        });
+        randomBTN.addActionListener(e -> {
+            try {
+                new ProfessorDAO().save(RandomProfessor.getProfessor());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            getAll();
+        });
+        sortedComboBox.addActionListener(e -> {
+            getAll();
+        });
     }
 
     // Exibe todos os professores
@@ -116,6 +137,9 @@ public class ProfessorsFrame extends JFrame {
         String[] col = null;
         try {
             List<Professor> professors = new ProfessorDAO().findAll();
+            if (sortedComboBox.getSelectedIndex() == 1) {
+                professors.sort(Professor.comparator);
+            }
             col = new String[]{"RA", "Nome", "Email"};
             data = new Object[professors.size()][col.length];
             for (int i = 0; i < professors.size(); i++) {
