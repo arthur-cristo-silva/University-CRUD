@@ -2,8 +2,6 @@ package com.arthur;
 
 import com.arthur.dao.ProfessorDAO;
 import com.arthur.dao.StudentDAO;
-import com.arthur.entity.Professor;
-import com.arthur.entity.Student;
 import com.arthur.factory.ConnectionFactory;
 import com.arthur.factory.RandomProfessor;
 import com.arthur.factory.RandomStudent;

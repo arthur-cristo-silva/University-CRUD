@@ -7,10 +7,7 @@ import com.arthur.entity.Student;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 public class StudentsFrame extends JFrame {

@@ -1,17 +1,12 @@
 package com.arthur.frames.professors;
 
 import com.arthur.dao.ProfessorDAO;
-import com.arthur.dao.StudentDAO;
-import com.arthur.entity.Student;
 import com.arthur.factory.RandomProfessor;
-import com.arthur.factory.RandomStudent;
 import com.arthur.frames.MainFrame;
 import com.arthur.entity.Professor;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -81,8 +76,8 @@ public class ProfessorsFrame extends JFrame {
         });
         // Pesquisa por professor pelo seu RA
         searchBTN.addActionListener(e -> {
-            Object[][] data = null;
-            String[] col = null;
+            Object[][] data;
+            String[] col;
             try {
                 Professor professor = new ProfessorDAO().findByRA(raInput.getText());
                 if (professor.getRa() == null) {

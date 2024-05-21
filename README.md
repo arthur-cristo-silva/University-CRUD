@@ -2,7 +2,7 @@
 
 Este projeto consiste em um CRUD que gerencia professores e alunos em um banco de dados MySQL através de uma interface gráfica amigável ao usuário.
 
-<img src="https://github.com/arthur-cristo-silva/expounifacs-jcrud/blob/main/src/main/resources/professors.gif" alt="Gif demonstrando o funcionamento do gerenciamento de professores. (Versão Antiga)">
+[![Demonstração](https://github.com/arthur-cristo-silva/expounifacs-jcrud/blob/main/src/main/resources/professors.gif)](https://youtu.be/EDB3UzsfJa0)
 
 ## Como Executar
 - Crie o Banco de Dados e Usuário MySQL:
