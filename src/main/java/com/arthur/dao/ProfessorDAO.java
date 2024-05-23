@@ -14,7 +14,7 @@ public class ProfessorDAO implements DAO<Professor> {
     public void save(Professor professor) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'professor')";
         String professorSql = "INSERT INTO professors(ra, phoneNumber, email, workload) VALUES(?, ?, ?, ?)";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement personPs = conn.prepareStatement(personSql, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement professorPs = conn.prepareStatement(professorSql)) {
             personPs.setString(1, professor.getName());
@@ -38,7 +38,7 @@ public class ProfessorDAO implements DAO<Professor> {
         String sql = "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra ";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Professor professor = new Professor();
@@ -63,7 +63,7 @@ public class ProfessorDAO implements DAO<Professor> {
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
                 "WHERE p.ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, Long.parseLong(ra));
             try (ResultSet rs = ps.executeQuery()) {
@@ -85,7 +85,7 @@ public class ProfessorDAO implements DAO<Professor> {
     public void update(Professor professor) throws SQLException {
         String sqlPeople = "UPDATE people SET name = ? WHERE ra = ?";
         String sqlProfessors = "UPDATE professors SET phoneNumber = ?, email = ?, workload = ? WHERE ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement psPeople = conn.prepareStatement(sqlPeople);
              PreparedStatement psProfessors = conn.prepareStatement(sqlProfessors)) {
             psPeople.setString(1, professor.getName());
@@ -105,7 +105,7 @@ public class ProfessorDAO implements DAO<Professor> {
     public void delete(long ra) throws SQLException {
         String sqlProfessors = "DELETE FROM professors WHERE ra = ?";
         String sqlPeople = "DELETE FROM people WHERE ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement psProfessors = conn.prepareStatement(sqlProfessors);
              PreparedStatement psPeople = conn.prepareStatement(sqlPeople)) {
 

@@ -16,29 +16,29 @@ public class Main {
     public static void main(String[] args) {
 
         String peopleTableSql = """
-                create table if not exists people (
-                    ra       bigint(20) not null primary key auto_increment,
-                    name     varchar(100),
-                    type     varchar(10));""";
+                CREATE TABLE IF NOT EXISTS people (
+                    ra       BIGSERIAL PRIMARY KEY,
+                    name     VARCHAR(100),
+                    type     VARCHAR(10));""";
 
         String professorsTableSql = """
-                create table if not exists professors (
-                    ra       bigint(20) not null primary key,
-                    phoneNumber      varchar(20),
-                    email    varchar(100),
-                    workload varchar(2),
-                    foreign key (ra) references people(ra));""";
+                CREATE TABLE IF NOT EXISTS professors (
+                    ra            BIGINT NOT NULL PRIMARY KEY,
+                    phoneNumber   VARCHAR(100),
+                    email         VARCHAR(100),
+                    workload      INT,
+                    FOREIGN KEY (ra) REFERENCES people(ra));""";
 
         String studentsTableSql = """
-                create table if not exists students (
-                    ra       bigint(20) not null primary key,
-                    course   varchar(100),
-                    periods   int(2),
-                    schedule varchar(5),
-                    absences int(11),
-                    foreign key (ra) references people(ra));""";
+                CREATE TABLE IF NOT EXISTS students (
+                    ra        BIGINT NOT NULL PRIMARY KEY,
+                    course    VARCHAR(100),
+                    periods   INT,
+                    schedule  VARCHAR(5),
+                    absences  INT,
+                    FOREIGN KEY (ra) REFERENCES people(ra));""";
 
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL(); Statement st = conn.createStatement()) {
+        try (Connection conn = ConnectionFactory.createConnection(); Statement st = conn.createStatement()) {
             // Cria tabela de professores e alunos
             st.executeUpdate(peopleTableSql);
             st.executeUpdate(professorsTableSql);

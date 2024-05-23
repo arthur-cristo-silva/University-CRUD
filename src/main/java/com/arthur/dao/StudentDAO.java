@@ -14,7 +14,7 @@ public class StudentDAO implements DAO<Student> {
     public void save(Student student) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'student')";
         String studentSql = "INSERT INTO students(ra, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement personPs = conn.prepareStatement(personSql, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement studentPs = conn.prepareStatement(studentSql)) {
             personPs.setString(1, student.getName());
@@ -40,7 +40,7 @@ public class StudentDAO implements DAO<Student> {
         String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
                 "FROM students AS s "+
                 "INNER JOIN people as pe ON s.ra = pe.ra";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Student student = new Student();
@@ -67,7 +67,7 @@ public class StudentDAO implements DAO<Student> {
                 "FROM students AS s "+
                 "INNER JOIN people AS pe ON s.ra = pe.ra "+
                 "WHERE s.ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConnectionFactory.createConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, Long.parseLong(ra));
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -92,7 +92,7 @@ public class StudentDAO implements DAO<Student> {
     public void update(Student student) throws SQLException {
         String personSql = "UPDATE people SET name = ? WHERE ra = ?";
         String studentSql = "UPDATE students SET course = ?, periods = ?, schedule = ?, absences = ? WHERE ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement personPs = conn.prepareStatement(personSql);
              PreparedStatement studentPs = conn.prepareStatement(studentSql)) {
             personPs.setString(1, student.getName());
@@ -114,7 +114,7 @@ public class StudentDAO implements DAO<Student> {
     public void delete(long ra) throws SQLException {
         String studentSql = "DELETE FROM students WHERE ra = ?";
         String personSql = "DELETE FROM people WHERE ra = ?";
-        try (Connection conn = ConnectionFactory.createConnectionToMySQL();
+        try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement personPs = conn.prepareStatement(personSql);
              PreparedStatement studentPs = conn.prepareStatement(studentSql)) {
             personPs.setLong(1, ra);
