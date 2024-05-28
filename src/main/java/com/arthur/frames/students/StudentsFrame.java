@@ -25,6 +25,7 @@ public class StudentsFrame extends JFrame {
     private JComboBox sortedComboBox;
     private JButton getAllBTN;
     private JButton randomBTN;
+    private JTextField searchInput;
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
@@ -47,7 +48,7 @@ public class StudentsFrame extends JFrame {
         updateBTN.addActionListener(e -> {
             try {
                 long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
-                Student student = new StudentDAO().findByRA(String.valueOf(ra));
+                Student student = StudentDAO.findByRA(String.valueOf(ra));
                 new UpdateStudent(student);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
@@ -66,7 +67,7 @@ public class StudentsFrame extends JFrame {
                 int result = JOptionPane.showConfirmDialog (mainPanel,
                         "Você deseja realmente remover o cadastro do aluno de RA: "+ra+"?",null, JOptionPane.YES_NO_OPTION);
                 if(result == JOptionPane.YES_OPTION){
-                    new StudentDAO().delete(ra);
+                    StudentDAO.delete(ra);
                 }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
@@ -79,7 +80,7 @@ public class StudentsFrame extends JFrame {
         // Pesquisa por aluno pelo seu RA
         searchBTN.addActionListener(e -> {
             try {
-                Student student = new StudentDAO().findByRA(raInput.getText());
+                Student student = StudentDAO.findByRA(raInput.getText());
                 if (student.getRa() == null) {
                     JOptionPane.showMessageDialog(mainPanel, "Nenhum aluno com este RA foi encontrado.");
                     getAll();
@@ -108,7 +109,7 @@ public class StudentsFrame extends JFrame {
         });
         randomBTN.addActionListener(e -> {
                 try {
-                    new StudentDAO().save(RandomStudent.getStudent());
+                    StudentDAO.save(RandomStudent.getStudent());
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -125,7 +126,7 @@ public class StudentsFrame extends JFrame {
         String[] col = null;
         try {
             List<Student> students;
-            students = new StudentDAO().findAll(sortedComboBox.getSelectedIndex() != 1);
+            students = StudentDAO.findAll(sortedComboBox.getSelectedIndex() != 1);
             col = new String[]{"RA", "Nome", "Curso"};
             data = new Object[students.size()][col.length];
             for (int i = 0; i < students.size(); i++) {

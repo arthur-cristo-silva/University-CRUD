@@ -2,6 +2,7 @@ package com.arthur.frames;
 
 import com.arthur.frames.professors.ProfessorsFrame;
 import com.arthur.frames.students.StudentsFrame;
+import com.arthur.frames.ucs.UcFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ public class MainFrame extends JFrame {
     private JLabel titleTXT;
     private JButton classesBTN;
     private JButton sairBTN;
+    private JButton ucsBtn;
 
     // Janela principal
     public MainFrame() {
@@ -34,10 +36,12 @@ public class MainFrame extends JFrame {
             new ProfessorsFrame();
             dispose();
         });
-        // Fecha o programa
-        sairBTN.addActionListener(e -> {
-            JOptionPane.showMessageDialog(mainPanel, "Saindo do programa...");
+        // Vai para a janela de UCS
+        ucsBtn.addActionListener(e -> {
+            new UcFrame();
             dispose();
         });
+        // Fecha o programa
+        sairBTN.addActionListener(e -> dispose());
     }
 }

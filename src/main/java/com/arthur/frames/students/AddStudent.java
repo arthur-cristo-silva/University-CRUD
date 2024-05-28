@@ -36,7 +36,7 @@ public class AddStudent  extends JFrame {
         setVisible(true);
         addBTN.addActionListener(e -> {
             try {
-                new StudentDAO().save(getStudent());
+                StudentDAO.save(getStudent());
                 JOptionPane.showMessageDialog(mainPanel, "Aluno adicionado!");
                 new StudentsFrame();
                 dispose();

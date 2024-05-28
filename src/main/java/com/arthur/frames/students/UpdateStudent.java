@@ -2,7 +2,6 @@ package com.arthur.frames.students;
 
 import com.arthur.dao.StudentDAO;
 import com.arthur.entity.Student;
-import com.arthur.frames.professors.ProfessorsFrame;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -44,7 +43,7 @@ public class UpdateStudent  extends JFrame {
         addBTN.addActionListener(e -> {
             try {
                 Student newStudent = getStudent(student.getRa());
-                new StudentDAO().update(newStudent);
+                StudentDAO.update(newStudent);
                 JOptionPane.showMessageDialog(mainPanel, "Aluno atualizado!");
                 new StudentsFrame();
                 dispose();

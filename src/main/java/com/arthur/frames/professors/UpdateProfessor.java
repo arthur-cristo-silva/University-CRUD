@@ -39,7 +39,7 @@ public class UpdateProfessor extends JFrame {
         addBTN.addActionListener(e -> {
             try {
                 Professor newProfessor = getProfessor(professor.getRa());
-                new ProfessorDAO().update(newProfessor);
+                ProfessorDAO.update(newProfessor);
                 JOptionPane.showMessageDialog(mainPanel, "Professor atualizado!");
                 new ProfessorsFrame();
                 dispose();

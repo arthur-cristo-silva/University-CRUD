@@ -47,7 +47,7 @@ public class ProfessorsFrame extends JFrame {
         updateBTN.addActionListener(e -> {
             try {
                 long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
-                Professor professor = new ProfessorDAO().findByRA(String.valueOf(ra));
+                Professor professor = ProfessorDAO.findByRA(String.valueOf(ra));
                 new UpdateProfessor(professor);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
@@ -64,7 +64,7 @@ public class ProfessorsFrame extends JFrame {
                 int result = JOptionPane.showConfirmDialog(mainPanel,
                         "Você deseja realmente remover o cadastro do aluno de RA: " + ra + "?", null, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
-                    new ProfessorDAO().delete(ra);
+                    ProfessorDAO.delete(ra);
                 }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
@@ -76,22 +76,12 @@ public class ProfessorsFrame extends JFrame {
         });
         // Pesquisa por professor pelo seu RA
         searchBTN.addActionListener(e -> {
-            Object[][] data;
-            String[] col;
             try {
-                Professor professor = new ProfessorDAO().findByRA(raInput.getText());
+                Professor professor = ProfessorDAO.findByRA(raInput.getText());
                 if (professor.getRa() == null) {
                     JOptionPane.showMessageDialog(mainPanel, "Nenhum professor com este RA foi encontrado.");
                 } else {
-                    col = new String[]{"RA", "Nome", "Telefone", "Email", "CH"};
-                    data = new Object[1][col.length];
-                    data[0][0] = professor.getRa();
-                    data[0][1] = professor.getName();
-                    data[0][2] = professor.getPhoneNumber();
-                    data[0][3] = professor.getEmail();
-                    data[0][4] = professor.getWorkload();
-                    table1.setModel(new DefaultTableModel(data, col));
-                    table1.setDefaultEditor(Object.class, null);
+                    new ProfessorView(professor);
                 }
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar professor.");
@@ -113,7 +103,7 @@ public class ProfessorsFrame extends JFrame {
         });
         randomBTN.addActionListener(e -> {
             try {
-                new ProfessorDAO().save(RandomProfessor.getProfessor());
+                ProfessorDAO.save(RandomProfessor.getProfessor());
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -130,7 +120,7 @@ public class ProfessorsFrame extends JFrame {
         String[] col = null;
         try {
             List<Professor> professors;
-            professors = new ProfessorDAO().findAll(sortedComboBox.getSelectedIndex() != 1);
+            professors = ProfessorDAO.findAll(sortedComboBox.getSelectedIndex() != 1);
             col = new String[]{"RA", "Nome", "Email"};
             data = new Object[professors.size()][col.length];
             for (int i = 0; i < professors.size(); i++) {
