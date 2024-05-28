@@ -11,7 +11,7 @@ public class StudentDAO {
 
     // Cadastra novo aluno no banco de dados
 
-    public void save(Student student) throws SQLException {
+    public static void save(Student student) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'student')";
         String studentSql = "INSERT INTO students(ra, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.createConnection();
@@ -35,7 +35,7 @@ public class StudentDAO {
 
     // Retorna todos os alunos cadastrados
 
-    public List<Student> findAll(boolean aux) throws SQLException {
+    public static List<Student> findAll(boolean aux) throws SQLException {
         List<Student> students = new ArrayList<>();
         String sql = aux ?
                 "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
@@ -66,14 +66,15 @@ public class StudentDAO {
 
     // Procura por aluno pelo seu RA
 
-    public Student findByRA(String ra) throws SQLException {
+    public static Student findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Student student = new Student();
         String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
                 "FROM students AS s "+
                 "INNER JOIN people AS pe ON s.ra = pe.ra "+
                 "WHERE s.ra = ?";
-        try (Connection conn = ConnectionFactory.createConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConnectionFactory.createConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, Long.parseLong(ra));
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -95,7 +96,7 @@ public class StudentDAO {
 
     // Atualiza aluno no banco de dados
 
-    public void update(Student student) throws SQLException {
+    public static void update(Student student) throws SQLException {
         String personSql = "UPDATE people SET name = ? WHERE ra = ?";
         String studentSql = "UPDATE students SET course = ?, periods = ?, schedule = ?, absences = ? WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnection();
@@ -116,7 +117,7 @@ public class StudentDAO {
     }
 
     // Remove aluno do banco de dados pelo seu RA
-    public void delete(long ra) throws SQLException {
+    public static void delete(long ra) throws SQLException {
         String studentSql = "DELETE FROM students WHERE ra = ?";
         String personSql = "DELETE FROM people WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnection();

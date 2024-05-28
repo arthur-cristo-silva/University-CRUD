@@ -10,7 +10,7 @@ import java.util.List;
 public class ProfessorDAO {
 
     //Cadastra novo professor no banco de dados
-    public void save(Professor professor) throws SQLException {
+    public static void save(Professor professor) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'professor')";
         String professorSql = "INSERT INTO professors(ra, phoneNumber, email, workload) VALUES(?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.createConnection();
@@ -31,7 +31,7 @@ public class ProfessorDAO {
         }
     }
 
-    public List<Professor> findAll(Boolean aux) throws SQLException {
+    public static List<Professor> findAll(Boolean aux) throws SQLException {
         List<Professor> professors = new ArrayList<>();
         String sql = aux ?
                 "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
@@ -59,7 +59,7 @@ public class ProfessorDAO {
         return professors;
     }
 
-    public Professor findByRA(String ra) throws SQLException {
+    public static Professor findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Professor professor = new Professor();
         String sql = "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
@@ -84,7 +84,7 @@ public class ProfessorDAO {
         return professor;
     }
 
-    public void update(Professor professor) throws SQLException {
+    public static void update(Professor professor) throws SQLException {
         String sqlPeople = "UPDATE people SET name = ? WHERE ra = ?";
         String sqlProfessors = "UPDATE professors SET phoneNumber = ?, email = ?, workload = ? WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnection();
@@ -103,7 +103,7 @@ public class ProfessorDAO {
         }
     }
 
-    public void delete(long ra) throws SQLException {
+    public static void delete(long ra) throws SQLException {
         String sqlProfessors = "DELETE FROM professors WHERE ra = ?";
         String sqlPeople = "DELETE FROM people WHERE ra = ?";
         try (Connection conn = ConnectionFactory.createConnection();
