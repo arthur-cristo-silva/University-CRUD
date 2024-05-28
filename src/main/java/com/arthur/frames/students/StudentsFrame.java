@@ -104,9 +104,7 @@ public class StudentsFrame extends JFrame {
             new MainFrame();
             dispose();
         });
-        getAllBTN.addActionListener(e -> {
-            getAll();
-        });
+        getAllBTN.addActionListener(e -> getAll());
         randomBTN.addActionListener(e -> {
                 try {
                     StudentDAO.save(RandomStudent.getStudent());
@@ -115,9 +113,7 @@ public class StudentsFrame extends JFrame {
                 }
             getAll();
         });
-        sortedComboBox.addActionListener(e -> {
-            getAll();
-        });
+        sortedComboBox.addActionListener(e -> getAll());
     }
 
     // Exibe todos os alunos

@@ -1,6 +1,5 @@
 package com.arthur.factory;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class RandomTemplates {

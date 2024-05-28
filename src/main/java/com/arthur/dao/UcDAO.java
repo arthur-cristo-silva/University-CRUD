@@ -45,7 +45,7 @@ public class UcDAO {
         return ucs;
     }
 
-    public static List<Uc> getByName(String name) throws SQLException {
+    public static List<Uc> getByName(String name) throws Exception {
         String sql = "SELECT * FROM disciplines WHERE name LIKE ?";
         List<Uc> ucs = new ArrayList<>();
         try (Connection con = ConnectionFactory.createConnection();
@@ -59,13 +59,11 @@ public class UcDAO {
                 uc.setType(rs.getString("type"));
                 ucs.add(uc);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         return ucs;
     }
 
-    public static Uc getByCode(String code) throws SQLException {
+    public static Uc getByCode(String code) throws Exception {
         String sql = "SELECT * FROM disciplines WHERE code = ?";
         Uc uc = new Uc();
         try (Connection con = ConnectionFactory.createConnection();
@@ -78,32 +76,26 @@ public class UcDAO {
                     uc.setType(rs.getString("type"));
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         return uc;
     }
 
-    public static void update(Uc uc) throws SQLException {
+    public static void update(Uc uc) throws Exception {
         String sql = "UPDATE disciplines SET name = ?, type = ? WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, uc.getName());
             ps.setString(2, uc.getType());
             ps.setString(3, uc.getCode());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public static void delete(String code) throws SQLException {
+    public static void delete(String code) throws Exception {
         String sql = "DELETE FROM disciplines WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, code);
             ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 }

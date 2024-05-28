@@ -98,9 +98,7 @@ public class ProfessorsFrame extends JFrame {
             new MainFrame();
             dispose();
         });
-        getAllBTN.addActionListener(e -> {
-            getAll();
-        });
+        getAllBTN.addActionListener(e -> getAll());
         randomBTN.addActionListener(e -> {
             try {
                 ProfessorDAO.save(RandomProfessor.getProfessor());
@@ -109,9 +107,7 @@ public class ProfessorsFrame extends JFrame {
             }
             getAll();
         });
-        sortedComboBox.addActionListener(e -> {
-            getAll();
-        });
+        sortedComboBox.addActionListener(e -> getAll());
     }
 
     // Exibe todos os professores

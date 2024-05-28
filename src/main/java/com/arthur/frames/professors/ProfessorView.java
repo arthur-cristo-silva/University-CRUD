@@ -1,9 +1,6 @@
 package com.arthur.frames.professors;
 
 import com.arthur.entity.Professor;
-import com.arthur.entity.Student;
-import com.arthur.frames.students.StudentsFrame;
-
 import javax.swing.*;
 
 public class ProfessorView extends JFrame {

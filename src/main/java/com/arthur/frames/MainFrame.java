@@ -5,8 +5,6 @@ import com.arthur.frames.students.StudentsFrame;
 import com.arthur.frames.ucs.UcFrame;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private JButton professorBTN;

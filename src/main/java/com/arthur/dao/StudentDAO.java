@@ -45,7 +45,7 @@ public class StudentDAO {
                 "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
                         "FROM students AS s "+
                         "INNER JOIN people as pe ON s.ra = pe.ra " +
-                        "ORDER BY pe.name ASC";;
+                        "ORDER BY pe.name ASC";
         try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {

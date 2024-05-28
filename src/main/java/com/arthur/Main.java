@@ -1,10 +1,6 @@
 package com.arthur;
 
-import com.arthur.dao.ProfessorDAO;
-import com.arthur.dao.StudentDAO;
 import com.arthur.factory.ConnectionFactory;
-import com.arthur.factory.RandomProfessor;
-import com.arthur.factory.RandomStudent;
 import com.arthur.frames.MainFrame;
 
 import javax.swing.*;

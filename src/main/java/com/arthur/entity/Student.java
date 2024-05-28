@@ -1,7 +1,5 @@
 package com.arthur.entity;
 
-import java.util.Comparator;
-
 public class Student extends Person {
     private Long ra;
     private String name;

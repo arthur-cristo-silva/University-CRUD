@@ -7,8 +7,6 @@ import com.arthur.frames.MainFrame;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -57,8 +55,8 @@ public class UcFrame extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma UC.");
                 getAll();
                 throw new RuntimeException(f);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            } catch (Exception h) {
+                throw new RuntimeException(h);
             }
         });
         // Deleta do banco de dados UC selecionada
@@ -71,10 +69,10 @@ public class UcFrame extends JFrame {
                 if (result == JOptionPane.YES_OPTION) {
                     UcDAO.delete(code);
                 }
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma UC.");
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             } finally {
                 getAll();
             }
@@ -134,6 +132,8 @@ public class UcFrame extends JFrame {
                 }
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             } finally {
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
