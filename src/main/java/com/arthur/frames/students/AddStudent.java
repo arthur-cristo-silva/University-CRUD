@@ -28,7 +28,7 @@ public class AddStudent  extends JFrame {
     // Cria novo aluno no banco de dados
     public AddStudent() {
         setContentPane(mainPanel);
-        setTitle("Atualizar Aluno");
+        setTitle("Adicionar Aluno");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(480, 400);
         setResizable(false);
