@@ -40,7 +40,7 @@ public class RandomTemplates {
     }
 
     public static String getRandomCode(String name) {
-        return name.toUpperCase().substring(0,4) + (r.nextInt(9) + r.nextInt(9) + r.nextInt(9));
+        return name.toUpperCase().substring(0,4) + (""+r.nextInt(9) + r.nextInt(9) + r.nextInt(9));
     }
 
     public static String getRandomType() {
