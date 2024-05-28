@@ -41,7 +41,8 @@ public class Main {
         String disciplineTableSql = """
                 CREATE TABLE IF NOT EXISTS disciplines (
                 code VARCHAR(100) NOT NULL UNIQUE PRIMARY KEY,
-                name     VARCHAR(100));""";
+                name     VARCHAR(100),
+                type VARCHAR(100));""";
 
         String classStudentsTableSql = """
                 CREATE TABLE IF NOT EXISTS students_class (
@@ -67,15 +68,6 @@ public class Main {
             st.executeUpdate(disciplineTableSql);
             st.executeUpdate(classesTableSql);
             st.executeUpdate(classStudentsTableSql);
-            boolean control = false;
-            if (control) {
-                ProfessorDAO professorDAO = new ProfessorDAO();
-                StudentDAO studentDAO = new StudentDAO();
-                for (int i = 0; i < 4; i++) {
-                    professorDAO.save(RandomProfessor.getProfessor());
-                    studentDAO.save(RandomStudent.getStudent());
-                }
-            }
             new MainFrame();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Banco de dados não encontrado.");
