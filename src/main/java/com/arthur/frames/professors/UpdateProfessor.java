@@ -24,7 +24,7 @@ public class UpdateProfessor extends JFrame {
     private JPanel mainPanel;
 
     // Janela para atualizar professor
-    public UpdateProfessor(Long ra, String name, String email) {
+    public UpdateProfessor(Professor professor) {
         setContentPane(mainPanel);
         setTitle("Atualizar Professor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,12 +32,14 @@ public class UpdateProfessor extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-        nameInput.setText(name);
-        emailInput.setText(email);
+        nameInput.setText(professor.getName());
+        emailInput.setText(professor.getEmail());
+        phoneNumberInput.setText(professor.getPhoneNumber());
+        workloadInput.setText(professor.getWorkload().toString());
         addBTN.addActionListener(e -> {
             try {
-                Professor professor = getProfessor(ra);
-                new ProfessorDAO().update(professor);
+                Professor newProfessor = getProfessor(professor.getRa());
+                new ProfessorDAO().update(newProfessor);
                 JOptionPane.showMessageDialog(mainPanel, "Professor atualizado!");
                 new ProfessorsFrame();
                 dispose();
@@ -61,7 +63,7 @@ public class UpdateProfessor extends JFrame {
         String phoneNumber = phoneNumberInput.getText();
         String email = emailInput.getText();
         int workload = Objects.equals(workloadInput.getText(), "") ? 0 : Integer.parseInt(workloadInput.getText());
-        if (name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || workload == 0) {
+        if (name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || workload < 0) {
             throw new Exception();
         }
         return new Professor(ra, name, phoneNumber, email, workload);

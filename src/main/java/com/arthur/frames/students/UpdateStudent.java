@@ -27,7 +27,7 @@ public class UpdateStudent  extends JFrame {
     private JLabel periodTXT;
 
     // Atualiza informações de estudante do banco de dados
-    public UpdateStudent(Long ra, String name, String course) {
+    public UpdateStudent(Student student) {
         setContentPane(mainPanel);
         setTitle("Atualizar Aluno");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -36,13 +36,15 @@ public class UpdateStudent  extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         // Preenche nos inputs o nome e curso do aluno
-        nameInput.setText(name);
-        courseInput.setText(course);
+        nameInput.setText(student.getName());
+        courseInput.setText(student.getCourse());
+        periodInput.setText(student.getPeriod().toString());
+        absencesInput.setText(student.getAbsences().toString());
+        scheduleInput.setSelectedItem(student.getSchedule());
         addBTN.addActionListener(e -> {
             try {
-                Student student = getStudent(ra);
-                StudentDAO studentDAO = new StudentDAO();
-                studentDAO.update(student);
+                Student newStudent = getStudent(student.getRa());
+                new StudentDAO().update(newStudent);
                 JOptionPane.showMessageDialog(mainPanel, "Aluno atualizado!");
                 new StudentsFrame();
                 dispose();

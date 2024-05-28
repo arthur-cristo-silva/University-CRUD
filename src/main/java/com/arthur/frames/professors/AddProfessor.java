@@ -35,8 +35,7 @@ public class AddProfessor extends JFrame {
         // Cadastra novo professor
         addBTN.addActionListener(e -> {
             try {
-                Professor professor = getProfessor();
-                new ProfessorDAO().save(professor);
+                new ProfessorDAO().save(getProfessor());
                 JOptionPane.showMessageDialog(mainPanel, "Professor cadastrado!");
                 new ProfessorsFrame();
                 dispose();

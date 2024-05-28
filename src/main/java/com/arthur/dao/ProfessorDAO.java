@@ -7,10 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorDAO implements DAO<Professor> {
+public class ProfessorDAO {
 
     //Cadastra novo professor no banco de dados
-    @Override
     public void save(Professor professor) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'professor')";
         String professorSql = "INSERT INTO professors(ra, phoneNumber, email, workload) VALUES(?, ?, ?, ?)";
@@ -32,12 +31,17 @@ public class ProfessorDAO implements DAO<Professor> {
         }
     }
 
-    @Override
-    public List<Professor> findAll() throws SQLException {
+    public List<Professor> findAll(Boolean aux) throws SQLException {
         List<Professor> professors = new ArrayList<>();
-        String sql = "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
-                "FROM professors AS p " +
-                "INNER JOIN people AS pe ON p.ra = pe.ra ";
+        String sql = aux ?
+                "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
+                        "FROM professors AS p " +
+                        "INNER JOIN people AS pe ON p.ra = pe.ra " +
+                        "ORDER BY p.ra" :
+                "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
+                        "FROM professors AS p " +
+                        "INNER JOIN people AS pe ON p.ra = pe.ra " +
+                        "ORDER BY pe.name ASC";
         try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -55,7 +59,6 @@ public class ProfessorDAO implements DAO<Professor> {
         return professors;
     }
 
-    @Override
     public Professor findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Professor professor = new Professor();
@@ -81,7 +84,6 @@ public class ProfessorDAO implements DAO<Professor> {
         return professor;
     }
 
-    @Override
     public void update(Professor professor) throws SQLException {
         String sqlPeople = "UPDATE people SET name = ? WHERE ra = ?";
         String sqlProfessors = "UPDATE professors SET phoneNumber = ?, email = ?, workload = ? WHERE ra = ?";
@@ -89,7 +91,7 @@ public class ProfessorDAO implements DAO<Professor> {
              PreparedStatement psPeople = conn.prepareStatement(sqlPeople);
              PreparedStatement psProfessors = conn.prepareStatement(sqlProfessors)) {
             psPeople.setString(1, professor.getName());
-            psPeople.setString(2, professor.getPhoneNumber());
+            psPeople.setLong(2, professor.getRa());
             psPeople.executeUpdate();
             psProfessors.setString(1, professor.getPhoneNumber());
             psProfessors.setString(2, professor.getEmail());
@@ -101,7 +103,6 @@ public class ProfessorDAO implements DAO<Professor> {
         }
     }
 
-    @Override
     public void delete(long ra) throws SQLException {
         String sqlProfessors = "DELETE FROM professors WHERE ra = ?";
         String sqlPeople = "DELETE FROM people WHERE ra = ?";

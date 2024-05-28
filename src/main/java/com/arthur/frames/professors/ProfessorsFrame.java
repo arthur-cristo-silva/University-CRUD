@@ -47,13 +47,13 @@ public class ProfessorsFrame extends JFrame {
         updateBTN.addActionListener(e -> {
             try {
                 long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
-                String name = table1.getModel().getValueAt(table1.getSelectedRow(), 1).toString();
-                String email = table1.getModel().getValueAt(table1.getSelectedRow(), 2).toString();
-                new UpdateProfessor(ra, name, email);
+                Professor professor = new ProfessorDAO().findByRA(String.valueOf(ra));
+                new UpdateProfessor(professor);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
-                getAll();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
             }
         });
         // Deleta do banco de dados professor selecionado
@@ -82,7 +82,6 @@ public class ProfessorsFrame extends JFrame {
                 Professor professor = new ProfessorDAO().findByRA(raInput.getText());
                 if (professor.getRa() == null) {
                     JOptionPane.showMessageDialog(mainPanel, "Nenhum professor com este RA foi encontrado.");
-                    getAll();
                 } else {
                     col = new String[]{"RA", "Nome", "Telefone", "Email", "CH"};
                     data = new Object[1][col.length];
@@ -98,7 +97,6 @@ public class ProfessorsFrame extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar professor.");
             } catch (NumberFormatException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                getAll();
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             } finally {
@@ -131,10 +129,8 @@ public class ProfessorsFrame extends JFrame {
         Object[][] data = null;
         String[] col = null;
         try {
-            List<Professor> professors = new ProfessorDAO().findAll();
-            if (sortedComboBox.getSelectedIndex() == 1) {
-                professors.sort(Professor.comparator);
-            }
+            List<Professor> professors;
+            professors = new ProfessorDAO().findAll(sortedComboBox.getSelectedIndex() != 1);
             col = new String[]{"RA", "Nome", "Email"};
             data = new Object[professors.size()][col.length];
             for (int i = 0; i < professors.size(); i++) {

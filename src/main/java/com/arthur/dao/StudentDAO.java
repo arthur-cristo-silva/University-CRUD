@@ -7,10 +7,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDAO implements DAO<Student> {
+public class StudentDAO {
 
     // Cadastra novo aluno no banco de dados
-    @Override
+
     public void save(Student student) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'student')";
         String studentSql = "INSERT INTO students(ra, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
@@ -34,12 +34,18 @@ public class StudentDAO implements DAO<Student> {
     }
 
     // Retorna todos os alunos cadastrados
-    @Override
-    public List<Student> findAll() throws SQLException {
+
+    public List<Student> findAll(boolean aux) throws SQLException {
         List<Student> students = new ArrayList<>();
-        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
+        String sql = aux ?
+                "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
                 "FROM students AS s "+
-                "INNER JOIN people as pe ON s.ra = pe.ra";
+                "INNER JOIN people as pe ON s.ra = pe.ra " +
+                "ORDER BY s.ra" :
+                "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
+                        "FROM students AS s "+
+                        "INNER JOIN people as pe ON s.ra = pe.ra " +
+                        "ORDER BY pe.name ASC";;
         try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -59,7 +65,7 @@ public class StudentDAO implements DAO<Student> {
     }
 
     // Procura por aluno pelo seu RA
-    @Override
+
     public Student findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Student student = new Student();
@@ -88,7 +94,7 @@ public class StudentDAO implements DAO<Student> {
     }
 
     // Atualiza aluno no banco de dados
-    @Override
+
     public void update(Student student) throws SQLException {
         String personSql = "UPDATE people SET name = ? WHERE ra = ?";
         String studentSql = "UPDATE students SET course = ?, periods = ?, schedule = ?, absences = ? WHERE ra = ?";
@@ -110,7 +116,6 @@ public class StudentDAO implements DAO<Student> {
     }
 
     // Remove aluno do banco de dados pelo seu RA
-    @Override
     public void delete(long ra) throws SQLException {
         String studentSql = "DELETE FROM students WHERE ra = ?";
         String personSql = "DELETE FROM people WHERE ra = ?";

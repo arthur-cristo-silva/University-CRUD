@@ -77,9 +77,4 @@ public class Student extends Person {
         this.absences = absences;
     }
 
-    public static Comparator<Student> comparator = (s1, s2) -> {
-        String firstName = s1.getName().toUpperCase();
-        String secondName = s2.getName().toUpperCase();
-        return firstName.compareTo(secondName);
-    };
 }

@@ -47,14 +47,15 @@ public class StudentsFrame extends JFrame {
         updateBTN.addActionListener(e -> {
             try {
                 long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
-                String name = table1.getModel().getValueAt(table1.getSelectedRow(), 1).toString();
-                String course = table1.getModel().getValueAt(table1.getSelectedRow(), 2).toString();
-                new UpdateStudent(ra, name, course);
+                Student student = new StudentDAO().findByRA(String.valueOf(ra));
+                new UpdateStudent(student);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
                 getAll();
                 throw new RuntimeException(f);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
             }
         });
         // Deleta do banco de dados aluno selecionado
@@ -77,24 +78,14 @@ public class StudentsFrame extends JFrame {
         });
         // Pesquisa por aluno pelo seu RA
         searchBTN.addActionListener(e -> {
-            Object[][] data = null;
-            String[] col = null;
             try {
                 Student student = new StudentDAO().findByRA(raInput.getText());
                 if (student.getRa() == null) {
                     JOptionPane.showMessageDialog(mainPanel, "Nenhum aluno com este RA foi encontrado.");
                     getAll();
                 } else {
-                    col = new String[]{"RA", "Nome", "Curso", "Semestre", "Horário", "Faltas"};
-                    data = new Object[1][col.length];
-                    data[0][0] = student.getRa();
-                    data[0][1] = student.getName();
-                    data[0][2] = student.getCourse();
-                    data[0][3] = student.getPeriod();
-                    data[0][4] = student.getSchedule();
-                    data[0][5] = student.getAbsences();
-                    table1.setModel(new DefaultTableModel(data, col));
-                    table1.setDefaultEditor(Object.class, null);
+                    new StudentView(student);
+                    dispose();
                 }
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar aluno.");
@@ -133,10 +124,8 @@ public class StudentsFrame extends JFrame {
         Object[][] data = null;
         String[] col = null;
         try {
-            List<Student> students = new StudentDAO().findAll();
-            if (sortedComboBox.getSelectedIndex() == 1) {
-                students.sort(Student.comparator);
-            }
+            List<Student> students;
+            students = new StudentDAO().findAll(sortedComboBox.getSelectedIndex() != 1);
             col = new String[]{"RA", "Nome", "Curso"};
             data = new Object[students.size()][col.length];
             for (int i = 0; i < students.size(); i++) {
