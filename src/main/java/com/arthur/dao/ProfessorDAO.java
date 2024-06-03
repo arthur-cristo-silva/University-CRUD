@@ -59,6 +59,29 @@ public class ProfessorDAO {
         return professors;
     }
 
+    public static List<Professor> findAll() throws SQLException {
+        List<Professor> professors = new ArrayList<>();
+        String sql = "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
+                "FROM professors AS p " +
+                "INNER JOIN people AS pe ON p.ra = pe.ra " +
+                "ORDER BY p.ra";
+        try (Connection conn = ConnectionFactory.createConnection();
+             PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Professor professor = new Professor();
+                professor.setRa(rs.getLong("ra"));
+                professor.setName(rs.getString("name"));
+                professor.setPhoneNumber(rs.getString("phoneNumber"));
+                professor.setEmail(rs.getString("email"));
+                professor.setWorkload(rs.getInt("workload"));
+                professors.add(professor);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return professors;
+    }
+
     public static Professor findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Professor professor = new Professor();
@@ -119,5 +142,24 @@ public class ProfessorDAO {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getRaByName(String name) {
+        String sql = "SELECT p.ra, pe.name " +
+                "FROM professors AS p " +
+                "INNER JOIN people AS pe ON p.ra = pe.ra " +
+                "WHERE pe.name = ?";
+        try(Connection con = ConnectionFactory.createConnection();
+        PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("ra");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }
