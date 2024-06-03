@@ -1,10 +1,13 @@
 package com.arthur.frames;
 
+import com.arthur.frames.classes.ClassesFrame;
 import com.arthur.frames.professors.ProfessorsFrame;
 import com.arthur.frames.students.StudentsFrame;
 import com.arthur.frames.ucs.UcFrame;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private JButton professorBTN;
@@ -37,6 +40,11 @@ public class MainFrame extends JFrame {
         // Vai para a janela de UCS
         ucsBtn.addActionListener(e -> {
             new UcFrame();
+            dispose();
+        });
+        // Vai para a janela de turmas
+        classesBTN.addActionListener(e -> {
+            new ClassesFrame();
             dispose();
         });
         // Fecha o programa
