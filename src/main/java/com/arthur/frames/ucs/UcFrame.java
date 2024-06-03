@@ -135,6 +135,7 @@ public class UcFrame extends JFrame {
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             } finally {
+                searchNameInput.setText("");
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
             }

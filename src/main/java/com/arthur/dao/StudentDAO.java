@@ -38,14 +38,38 @@ public class StudentDAO {
     public static List<Student> findAll(boolean aux) throws SQLException {
         List<Student> students = new ArrayList<>();
         String sql = aux ?
-                "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
-                "FROM students AS s "+
-                "INNER JOIN people as pe ON s.ra = pe.ra " +
-                "ORDER BY s.ra" :
-                "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
-                        "FROM students AS s "+
+                "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences " +
+                        "FROM students AS s " +
+                        "INNER JOIN people as pe ON s.ra = pe.ra " +
+                        "ORDER BY s.ra" :
+                "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences " +
+                        "FROM students AS s " +
                         "INNER JOIN people as pe ON s.ra = pe.ra " +
                         "ORDER BY pe.name ASC";
+        try (Connection conn = ConnectionFactory.createConnection();
+             PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Student student = new Student();
+                student.setRa(rs.getLong("ra"));
+                student.setName(rs.getString("name"));
+                student.setCourse(rs.getString("course"));
+                student.setPeriod(rs.getInt("periods"));
+                student.setSchedule(rs.getString("schedule"));
+                student.setAbsences(rs.getInt("absences"));
+                students.add(student);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return students;
+    }
+
+    public static List<Student> findAll() throws SQLException {
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences " +
+                "FROM students AS s " +
+                "INNER JOIN people as pe ON s.ra = pe.ra " +
+                "ORDER BY s.ra";
         try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -69,9 +93,9 @@ public class StudentDAO {
     public static Student findByRA(String ra) throws SQLException {
         ra = ra.isEmpty() ? "0" : ra;
         Student student = new Student();
-        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences "+
-                "FROM students AS s "+
-                "INNER JOIN people AS pe ON s.ra = pe.ra "+
+        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences " +
+                "FROM students AS s " +
+                "INNER JOIN people AS pe ON s.ra = pe.ra " +
                 "WHERE s.ra = ?";
         try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
