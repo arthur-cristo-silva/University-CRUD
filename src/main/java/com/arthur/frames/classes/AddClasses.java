@@ -1,0 +1,83 @@
+package com.arthur.frames.classes;
+
+import com.arthur.dao.ClassesDAO;
+import com.arthur.dao.ProfessorDAO;
+import com.arthur.dao.UcDAO;
+import com.arthur.entity.Classes;
+import com.arthur.entity.Professor;
+import com.arthur.entity.Uc;
+
+import javax.swing.*;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Random;
+
+public class AddClasses extends JFrame {
+
+    // Elementos da janela
+    private JLabel titleTXT;
+    private JTextField codeInput;
+    private JTextField periodInput;
+    private JTextField absencesInput;
+    private JComboBox scheduleInput;
+    private JTextField typeInput;
+    private JButton addBTN;
+    private JButton backButton;
+    private JPanel mainPanel;
+    private JLabel nameTXT;
+    private JLabel ucTXT;
+    private JComboBox ucCB;
+    private JComboBox professorCB;
+    private JLabel professorTXT;
+
+    // Cria novo aluno no banco de dados
+    public AddClasses() {
+        setContentPane(mainPanel);
+        setTitle("Adicionar Turma");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(480, 400);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        try {
+            List<Professor> professors = ProfessorDAO.findAll();
+            for (Professor professor : professors) {
+                professorCB.addItem(professor.getName());
+            }
+            List<Uc> ucs = UcDAO.getAll();
+            for (Uc uc : ucs) {
+                ucCB.addItem(uc.getCode());
+            }
+        } catch (Exception e) {}
+        addBTN.addActionListener(e -> {
+            try {
+                ClassesDAO.save(getClasses());
+                JOptionPane.showMessageDialog(mainPanel, "Turma cadastrada!");
+                new ClassesFrame();
+                dispose();
+            } catch (SQLException g) {
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar turma no banco de dados.");
+            } catch (Exception h) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
+                throw new RuntimeException(h);
+            }
+        });
+        // Volta para a janela anterior
+        backButton.addActionListener(e -> {
+            new ClassesFrame();
+            dispose();
+        });
+    }
+
+    // Metodo para colher informações do aluno
+    private Classes getClasses() throws Exception {
+        String code = codeInput.getText();
+        String uc = ucCB.getSelectedItem().toString();
+        String prof = ProfessorDAO.getRaByName(professorCB.getSelectedItem().toString());
+        if (code.isEmpty()) {
+            throw new Exception();
+        }
+        return new Classes(code, prof, uc);
+    }
+
+}
