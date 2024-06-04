@@ -1,5 +1,6 @@
 package com.arthur.dao;
 
+import com.arthur.entity.Uc;
 import com.arthur.factory.ConnectionFactory;
 import com.arthur.entity.Student;
 
@@ -116,6 +117,30 @@ public class StudentDAO {
             throw new RuntimeException(f);
         }
         return student;
+    }
+
+    public static List<Student> getByName(String name) throws Exception {
+        String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences " +
+                "FROM students AS s " +
+                "INNER JOIN people as pe ON s.ra = pe.ra " +
+                "WHERE pe.name LIKE ?";
+        List<Student> students = new ArrayList<>();
+        try (Connection con = ConnectionFactory.createConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%"+name+"%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Student student = new Student();
+                student.setRa(rs.getLong("ra"));
+                student.setName(rs.getString("name"));
+                student.setCourse(rs.getString("course"));
+                student.setPeriod(rs.getInt("periods"));
+                student.setSchedule(rs.getString("schedule"));
+                student.setAbsences(rs.getInt("absences"));
+                students.add(student);
+            }
+        }
+        return students;
     }
 
     // Atualiza aluno no banco de dados

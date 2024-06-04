@@ -1,5 +1,6 @@
 package com.arthur.dao;
 
+import com.arthur.entity.Student;
 import com.arthur.factory.ConnectionFactory;
 import com.arthur.entity.Professor;
 
@@ -29,6 +30,29 @@ public class ProfessorDAO {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<Professor> getByName(String name) throws Exception {
+        String sql = "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
+                "FROM professors AS p " +
+                "INNER JOIN people AS pe ON p.ra = pe.ra " +
+                "WHERE pe.name LIKE ?";
+        List<Professor> professors = new ArrayList<>();
+        try (Connection con = ConnectionFactory.createConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%"+name+"%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Professor professor = new Professor();
+                professor.setRa(rs.getLong("ra"));
+                professor.setName(rs.getString("name"));
+                professor.setPhoneNumber(rs.getString("phoneNumber"));
+                professor.setEmail(rs.getString("email"));
+                professor.setWorkload(rs.getInt("workload"));
+                professors.add(professor);
+            }
+        }
+        return professors;
     }
 
     public static List<Professor> findAll(Boolean aux) throws SQLException {
