@@ -1,5 +1,7 @@
 package com.arthur.entity;
 
+import java.util.InputMismatchException;
+
 public class Professor extends Person {
     private Long ra;
     private String name;
@@ -23,6 +25,40 @@ public class Professor extends Person {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.workload = workload;
+    }
+
+    public static Professor getProfessor(String name, String phoneNumber, String email, int workload) throws InputMismatchException, NumberFormatException {
+        try {
+            if (name.isEmpty()) {
+                throw new InputMismatchException("Por favor, insira um nome.");
+            } else if (phoneNumber.isEmpty()) {
+                throw new InputMismatchException("Por favor, insira um numero de telefone.");
+            } else if (email.isEmpty()) {
+                throw new InputMismatchException("Por favor, insira um email.");
+            } else if (workload < 0) {
+                throw new InputMismatchException("Por favor, insira um valor positivo em carga horária.");
+            }
+            return new Professor(name, phoneNumber, email, workload);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Por favor, insira apenas números no campo de carga horária.");
+        }
+    }
+
+    public static Professor getProfessor(long ra, String name, String phoneNumber, String email, int workload) throws InputMismatchException, NumberFormatException {
+        try {
+            if (name.isEmpty()) {
+                throw new InputMismatchException("Por favor, insira um nome.");
+            } else if (phoneNumber.isEmpty()) {
+                throw new InputMismatchException("Por favor, insira um numero de telefone.");
+            } else if (email.isEmpty()) {
+                throw new InputMismatchException("Por favor, insira um email.");
+            } else if (workload < 0) {
+                throw new InputMismatchException("Por favor, insira um valor positivo em carga horária.");
+            }
+            return new Professor(ra, name, phoneNumber, email, workload);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Por favor, insira apenas números no campo de carga horária.");
+        }
     }
 
     public Long getRa() {

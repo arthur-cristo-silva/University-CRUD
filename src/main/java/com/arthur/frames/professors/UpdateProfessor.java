@@ -5,6 +5,7 @@ import com.arthur.entity.Professor;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Objects;
 
 public class UpdateProfessor extends JFrame {
@@ -38,16 +39,16 @@ public class UpdateProfessor extends JFrame {
         workloadInput.setText(professor.getWorkload().toString());
         addBTN.addActionListener(e -> {
             try {
-                Professor newProfessor = getProfessor(professor.getRa());
-                ProfessorDAO.update(newProfessor);
+                ProfessorDAO.update(Professor.getProfessor(professor.getRa(), nameInput.getText(), emailInput.getText(), phoneNumberInput.getText(), Integer.parseInt(workloadInput.getText())));
                 JOptionPane.showMessageDialog(mainPanel, "Professor atualizado!");
                 new ProfessorsFrame();
                 dispose();
             } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar professor no banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+            } catch (InputMismatchException | NumberFormatException f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception h) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
             }
         });
         // Voltar para janela anterior
@@ -55,17 +56,5 @@ public class UpdateProfessor extends JFrame {
             new ProfessorsFrame();
             dispose();
         });
-    }
-
-    // Recolhe informações e retornar um objeto de professor
-    private Professor getProfessor(Long ra) throws Exception {
-        String name = nameInput.getText();
-        String phoneNumber = phoneNumberInput.getText();
-        String email = emailInput.getText();
-        int workload = Objects.equals(workloadInput.getText(), "") ? 0 : Integer.parseInt(workloadInput.getText());
-        if (name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || workload < 0) {
-            throw new Exception();
-        }
-        return new Professor(ra, name, phoneNumber, email, workload);
     }
 }

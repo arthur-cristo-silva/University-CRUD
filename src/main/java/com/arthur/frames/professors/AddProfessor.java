@@ -5,7 +5,7 @@ import com.arthur.entity.Professor;
 
 import javax.swing.*;
 import java.sql.SQLException;
-import java.util.Objects;
+import java.util.InputMismatchException;
 
 public class AddProfessor extends JFrame {
 
@@ -26,7 +26,7 @@ public class AddProfessor extends JFrame {
     // Cadastra novo professor no banco de dados
     public AddProfessor() {
         setContentPane(mainPanel);
-        setTitle("Atualizar Professor");
+        setTitle("Adicionar Professor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
@@ -35,15 +35,16 @@ public class AddProfessor extends JFrame {
         // Cadastra novo professor
         addBTN.addActionListener(e -> {
             try {
-                ProfessorDAO.save(getProfessor());
+                ProfessorDAO.save(Professor.getProfessor(nameInput.getText(), emailInput.getText(), phoneNumberInput.getText(), Integer.parseInt(workloadInput.getText())));
                 JOptionPane.showMessageDialog(mainPanel, "Professor cadastrado!");
                 new ProfessorsFrame();
                 dispose();
             } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar professor no banco de dados.");
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+            } catch (InputMismatchException | NumberFormatException g) {
+                System.out.println(g.getMessage());
+            } catch (Exception g) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu.");
             }
         });
         // Volta para janela anterior
@@ -51,17 +52,5 @@ public class AddProfessor extends JFrame {
             new ProfessorsFrame();
             dispose();
         });
-    }
-
-    // Recolhe informações e retornar um objeto de professor
-    private Professor getProfessor() throws Exception {
-        String name = nameInput.getText();
-        String phoneNumber = phoneNumberInput.getText();
-        String email = emailInput.getText();
-        int workload = Objects.equals(workloadInput.getText(), "") ? 0 : Integer.parseInt(workloadInput.getText());
-        if (name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || workload == 0) {
-            throw new Exception();
-        }
-        return new Professor(name, phoneNumber, email, workload);
     }
 }
