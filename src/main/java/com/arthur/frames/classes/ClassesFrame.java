@@ -128,9 +128,7 @@ public class ClassesFrame extends JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
             throw new RuntimeException(e);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
+        }  finally {
             table1.setModel(new DefaultTableModel(data, col));
             table1.setDefaultEditor(Object.class, null);
         }

@@ -6,7 +6,6 @@ import com.arthur.entity.Professor;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
-import java.util.Objects;
 
 public class UpdateProfessor extends JFrame {
 

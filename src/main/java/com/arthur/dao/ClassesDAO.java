@@ -3,6 +3,7 @@ package com.arthur.dao;
 import com.arthur.entity.Classes;
 import com.arthur.factory.ConnectionFactory;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ClassesDAO {
 
-    public static void save(Classes classes) throws Exception {
+    public static void save(Classes classes) throws SQLException {
         String classesSql = "INSERT INTO classes(code, discipline_code, professor_ra) VALUES(?, ?, ?)";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement classPs = con.prepareStatement(classesSql)) {
@@ -23,7 +24,7 @@ public class ClassesDAO {
         }
     }
 
-    public static void update(Classes classes) throws Exception {
+    public static void update(Classes classes) throws SQLException {
         String sql = "UPDATE classes SET professor_ra = ?, discipline_code = ? WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement classPs = con.prepareStatement(sql)) {
@@ -34,7 +35,7 @@ public class ClassesDAO {
         }
     }
 
-    public static int count(String code) throws Exception {
+    public static int count(String code) throws SQLException {
         String sql = "SELECT COUNT(*) FROM students_class WHERE class_code = ?";
         int count = 0;
         try (Connection con = ConnectionFactory.createConnection();
@@ -62,13 +63,11 @@ public class ClassesDAO {
                     classes.setProfessor(rs.getLong(3));
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return classes;
     }
 
-    public static void addStudent(String code, String ra) throws Exception {
+    public static void addStudent(String code, String ra) throws SQLException {
         String studentClassSql = "INSERT INTO student_classes(classes_code, student_class_name) VALUES(?, ?)";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement studentPs = con.prepareStatement(studentClassSql)) {
@@ -78,7 +77,7 @@ public class ClassesDAO {
         }
     }
 
-    public static void removeStudent(String code, String student) throws Exception {
+    public static void removeStudent(String code, String student) throws SQLException {
         String studentClassSql = "DELETE FROM student_classes WHERE student_ra = ? AND classes_code = ?";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement classPs = con.prepareStatement(studentClassSql)) {
@@ -88,7 +87,7 @@ public class ClassesDAO {
         }
     }
 
-    public static void delete(String code) throws Exception {
+    public static void delete(String code) throws SQLException {
         String classesSql = "DELETE FROM classes WHERE classes_code = ?";
         String studentClassSql = "DELETE FROM student_classes WHERE classes_code = ?";
         try (Connection con = ConnectionFactory.createConnection();
@@ -101,7 +100,7 @@ public class ClassesDAO {
         }
     }
 
-    public static List<Classes> getAll() {
+    public static List<Classes> getAll() throws SQLException {
         String sql = "SELECT * FROM classes";
         List<Classes> list = new ArrayList<>();
         try(Connection con = ConnectionFactory.createConnection();
@@ -114,8 +113,6 @@ public class ClassesDAO {
                 classes.setProfessor(rs.getLong(3));
                 list.add(classes);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         return list;
     }

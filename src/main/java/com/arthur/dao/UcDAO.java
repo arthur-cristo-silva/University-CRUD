@@ -21,9 +21,7 @@ public class UcDAO {
             ps.setString(2, uc.getName());
             ps.setString(3, uc.getType());
             ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     }
 
     public static List<Uc> getAll() throws SQLException {
@@ -39,13 +37,11 @@ public class UcDAO {
                 uc.setType(rs.getString("type"));
                 ucs.add(uc);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return ucs;
     }
 
-    public static List<Uc> getByName(String name) throws Exception {
+    public static List<Uc> getByName(String name) throws SQLException {
         String sql = "SELECT * FROM disciplines WHERE name LIKE ?";
         List<Uc> ucs = new ArrayList<>();
         try (Connection con = ConnectionFactory.createConnection();
@@ -63,7 +59,7 @@ public class UcDAO {
         return ucs;
     }
 
-    public static Uc getByCode(String code) throws Exception {
+    public static Uc getByCode(String code) throws SQLException {
         String sql = "SELECT * FROM disciplines WHERE code = ?";
         Uc uc = new Uc();
         try (Connection con = ConnectionFactory.createConnection();
@@ -80,7 +76,7 @@ public class UcDAO {
         return uc;
     }
 
-    public static void update(Uc uc) throws Exception {
+    public static void update(Uc uc) throws SQLException {
         String sql = "UPDATE disciplines SET name = ?, type = ? WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -90,7 +86,7 @@ public class UcDAO {
         }
     }
 
-    public static void delete(String code) throws Exception {
+    public static void delete(String code) throws SQLException {
         String sql = "DELETE FROM disciplines WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -99,7 +95,7 @@ public class UcDAO {
         }
     }
 
-    public static String getNameByCode(String code) throws Exception {
+    public static String getNameByCode(String code) throws SQLException {
         String sql = "SELECT * FROM disciplines WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement ps = con.prepareStatement(sql)) {

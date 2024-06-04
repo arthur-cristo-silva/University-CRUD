@@ -1,6 +1,5 @@
 package com.arthur.dao;
 
-import com.arthur.entity.Student;
 import com.arthur.factory.ConnectionFactory;
 import com.arthur.entity.Professor;
 
@@ -27,12 +26,10 @@ public class ProfessorDAO {
                 professorPs.setInt(4, professor.getWorkload());
                 professorPs.executeUpdate();
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     }
 
-    public static List<Professor> getByName(String name) throws Exception {
+    public static List<Professor> getByName(String name) throws SQLException {
         String sql = "SELECT p.ra, pe.name, p.phoneNumber, p.email, p.workload " +
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
@@ -77,9 +74,7 @@ public class ProfessorDAO {
                 professor.setWorkload(rs.getInt("workload"));
                 professors.add(professor);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return professors;
     }
 
@@ -100,8 +95,6 @@ public class ProfessorDAO {
                 professor.setWorkload(rs.getInt("workload"));
                 professors.add(professor);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         return professors;
     }
@@ -125,9 +118,7 @@ public class ProfessorDAO {
                     professor.setWorkload(rs.getInt("workload"));
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return professor;
     }
 
@@ -145,9 +136,7 @@ public class ProfessorDAO {
             psProfessors.setInt(3, professor.getWorkload());
             psProfessors.setLong(4, professor.getRa());
             psProfessors.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     }
 
     public static void delete(long ra) throws SQLException {
@@ -163,12 +152,10 @@ public class ProfessorDAO {
             psPeople.setLong(1, ra);
             psPeople.executeUpdate();
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     }
 
-    public static long getRaByName(String name) {
+    public static long getRaByName(String name) throws SQLException {
         String sql = "SELECT p.ra, pe.name " +
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
@@ -181,13 +168,11 @@ public class ProfessorDAO {
                     return rs.getLong("ra");
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return -1;
     }
 
-    public static String getNameByRa(long ra) {
+    public static String getNameByRa(long ra) throws SQLException {
         String sql = "SELECT p.ra, pe.name " +
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
@@ -200,9 +185,7 @@ public class ProfessorDAO {
                     return rs.getString("name");
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return null;
     }
 }

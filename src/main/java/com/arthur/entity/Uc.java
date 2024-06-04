@@ -20,12 +20,12 @@ public class Uc {
     // Metodo para colher informações do aluno
     public static Uc getUc(String name, String type) throws InputMismatchException {
         Random r = new Random();
-        String code = name.toUpperCase().substring(0,4) + (""+r.nextInt(9) + r.nextInt(9) + r.nextInt(9));
         if (name.isEmpty()) {
             throw new InputMismatchException("Por favor, informe o nome da UC.");
         } else if (type.isEmpty()) {
             throw new InputMismatchException("Por favor, informe o tipo da UC.");
         }
+        String code = name.toUpperCase().substring(0,4) + (""+r.nextInt(9) + r.nextInt(9) + r.nextInt(9));
         return new Uc(code, name, type);
     }
 

@@ -7,8 +7,6 @@ import com.arthur.entity.Student;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class StudentsFrame extends JFrame {
     private JScrollPane jScroll;
     private JTextField raInput;
     private JButton backBTN;
-    private JComboBox sortedComboBox;
+    private JComboBox<String> sortedComboBox;
     private JButton getAllBTN;
     private JButton randomBTN;
     private JButton searchNameBTN;

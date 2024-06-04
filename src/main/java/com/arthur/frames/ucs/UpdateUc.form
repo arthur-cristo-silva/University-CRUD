@@ -30,7 +30,7 @@
         <properties>
           <background color="-1052948"/>
           <foreground color="-16777216"/>
-          <horizontalAlignment value="0"/>
+          <horizontalAlignment value="2"/>
         </properties>
       </component>
       <component id="7b91d" class="javax.swing.JTextField" binding="typeInput">

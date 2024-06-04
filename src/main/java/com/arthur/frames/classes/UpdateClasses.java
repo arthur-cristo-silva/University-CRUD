@@ -46,8 +46,8 @@ public class UpdateClasses extends JFrame {
             for (Uc uc : ucs) {
                 ucCB.addItem(uc.getCode());
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
         }
         // Preenche nos inputs a uc e professor do turma
         ucCB.setSelectedItem(classes.getUc());

@@ -5,6 +5,7 @@ import com.arthur.entity.Student;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Objects;
 
 public class AddStudent  extends JFrame {
@@ -36,15 +37,21 @@ public class AddStudent  extends JFrame {
         setVisible(true);
         addBTN.addActionListener(e -> {
             try {
-                StudentDAO.save(getStudent());
+                String name = nameInput.getText();
+                String course = courseInput.getText();
+                int period = Objects.equals(periodInput.getText(), "") ? 1 : Integer.parseInt(periodInput.getText());
+                String schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
+                int absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
+                StudentDAO.save(Student.getStudent(name, course, period, schedule, absences));
                 JOptionPane.showMessageDialog(mainPanel, "Aluno adicionado!");
                 new StudentsFrame();
                 dispose();
-            } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar aluno no banco de dados.");
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (InputMismatchException f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Volta para a janela anterior
@@ -53,21 +60,4 @@ public class AddStudent  extends JFrame {
             dispose();
         });
     }
-
-    // Metodo para colher informações do aluno
-    private Student getStudent() throws Exception {
-        String name = nameInput.getText();
-        int period = Objects.equals(periodInput.getText(), "") ? 1 : Integer.parseInt(periodInput.getText());
-        if (period == 0) {
-            period = 1;
-        }
-        String course = courseInput.getText();
-        String schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
-        int absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
-        if (name.isEmpty() || course.isEmpty()) {
-            throw new Exception();
-        }
-        return new Student(name, course, period, schedule, absences);
-    }
-
 }

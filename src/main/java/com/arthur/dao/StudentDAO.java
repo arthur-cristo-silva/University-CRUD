@@ -1,6 +1,5 @@
 package com.arthur.dao;
 
-import com.arthur.entity.Uc;
 import com.arthur.factory.ConnectionFactory;
 import com.arthur.entity.Student;
 
@@ -29,9 +28,7 @@ public class StudentDAO {
                 studentPs.setInt(5, student.getAbsences());
                 studentPs.executeUpdate();
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     }
 
     // Retorna todos os alunos cadastrados
@@ -59,9 +56,7 @@ public class StudentDAO {
                 student.setAbsences(rs.getInt("absences"));
                 students.add(student);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
         return students;
     }
 
@@ -83,8 +78,6 @@ public class StudentDAO {
                 student.setAbsences(rs.getInt("absences"));
                 students.add(student);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         return students;
     }
@@ -119,7 +112,7 @@ public class StudentDAO {
         return student;
     }
 
-    public static List<Student> getByName(String name) throws Exception {
+    public static List<Student> getByName(String name) throws SQLException {
         String sql = "SELECT s.ra, pe.name, s.course, s.periods, s.schedule, s.absences " +
                 "FROM students AS s " +
                 "INNER JOIN people as pe ON s.ra = pe.ra " +
@@ -176,9 +169,7 @@ public class StudentDAO {
             studentPs.setLong(1, ra);
             studentPs.executeUpdate();
             personPs.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     }
 }
 

@@ -1,5 +1,8 @@
 package com.arthur.entity;
 
+import java.util.InputMismatchException;
+import java.util.Objects;
+
 public class Student extends Person {
     private Long ra;
     private String name;
@@ -25,6 +28,25 @@ public class Student extends Person {
         this.period = period;
         this.schedule = schedule;
         this.absences = absences;
+    }
+
+    public static Student getStudent(String name, String course, int period, String schedule, int absences) throws Exception {
+        if (name.isEmpty()) {
+            throw new InputMismatchException("Por favor, digite um nome.");
+        } else if (course.isEmpty()) {
+            throw new InputMismatchException("Por favor, digite um curso.");
+        }
+        return new Student(name, course, period, schedule, absences);
+    }
+
+    public static Student getStudent(long ra, String name, String course, int period, String schedule, int absences) throws Exception {
+        period = period == 0 ? 1 : period;
+        if (name.isEmpty()) {
+            throw new InputMismatchException("Por favor, digite um nome.");
+        } else if (course.isEmpty()) {
+            throw new InputMismatchException("Por favor, digite um curso.");
+        }
+        return new Student(ra, name, course, period, schedule, absences);
     }
 
     public Long getRa() {

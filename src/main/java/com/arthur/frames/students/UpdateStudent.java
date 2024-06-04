@@ -5,6 +5,7 @@ import com.arthur.entity.Student;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Objects;
 
 public class UpdateStudent  extends JFrame {
@@ -42,16 +43,21 @@ public class UpdateStudent  extends JFrame {
         scheduleInput.setSelectedItem(student.getSchedule());
         addBTN.addActionListener(e -> {
             try {
-                Student newStudent = getStudent(student.getRa());
-                StudentDAO.update(newStudent);
+                String name = nameInput.getText();
+                int period = Objects.equals(periodInput.getText(), "") ? 1 : Integer.parseInt(periodInput.getText());
+                String course = courseInput.getText();
+                String schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
+                int absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
+                StudentDAO.update(Student.getStudent(student.getRa(), name, course, period, schedule, absences));
                 JOptionPane.showMessageDialog(mainPanel, "Aluno atualizado!");
                 new StudentsFrame();
                 dispose();
-            } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar aluno no banco de dados.");
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (InputMismatchException f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Volta para janela anterior
@@ -59,21 +65,5 @@ public class UpdateStudent  extends JFrame {
             new StudentsFrame();
             dispose();
         });
-    }
-
-    // Metodo para colher informações do aluno
-    private Student getStudent(long ra) throws Exception {
-        String name = nameInput.getText();
-        int period = Objects.equals(periodInput.getText(), "") ? 1 : Integer.parseInt(periodInput.getText());
-        if (period == 0) {
-            period = 1;
-        }
-        String course = courseInput.getText();
-        String schedule = Objects.requireNonNull(scheduleInput.getSelectedItem()).toString();
-        int absences = Objects.equals(absencesInput.getText(), "") ? 0 : Integer.parseInt(absencesInput.getText());
-        if (name.isEmpty() || course.isEmpty()) {
-            throw new Exception();
-        }
-        return new Student(ra, name, course, period, schedule, absences);
     }
 }

@@ -6,7 +6,6 @@ import com.arthur.entity.Uc;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
-import java.util.Random;
 
 public class UpdateUc extends JFrame {
 
