@@ -145,13 +145,10 @@ public class ProfessorDAO {
         try (Connection conn = ConnectionFactory.createConnection();
              PreparedStatement psProfessors = conn.prepareStatement(sqlProfessors);
              PreparedStatement psPeople = conn.prepareStatement(sqlPeople)) {
-
             psProfessors.setLong(1, ra);
             psProfessors.executeUpdate();
-
             psPeople.setLong(1, ra);
             psPeople.executeUpdate();
-
         } 
     }
 

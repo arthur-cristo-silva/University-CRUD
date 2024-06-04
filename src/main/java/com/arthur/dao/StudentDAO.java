@@ -10,7 +10,6 @@ import java.util.List;
 public class StudentDAO {
 
     // Cadastra novo aluno no banco de dados
-
     public static void save(Student student) throws SQLException {
         String personSql = "INSERT INTO people(name, type) VALUES(?, 'student')";
         String studentSql = "INSERT INTO students(ra, course, periods, schedule, absences) VALUES (?, ?, ?, ?, ?)";
@@ -104,10 +103,6 @@ public class StudentDAO {
                     student.setAbsences(rs.getInt("absences"));
                 }
             }
-        } catch (NumberFormatException e) {
-            throw e;
-        } catch (Exception f) {
-            throw new RuntimeException(f);
         }
         return student;
     }
@@ -153,8 +148,6 @@ public class StudentDAO {
             studentPs.setInt(4, student.getAbsences());
             studentPs.setLong(5, student.getRa());
             studentPs.executeUpdate();
-        } catch (Exception f) {
-            throw new RuntimeException(f);
         }
     }
 
