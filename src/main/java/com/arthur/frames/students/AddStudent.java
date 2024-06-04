@@ -15,7 +15,7 @@ public class AddStudent  extends JFrame {
     private JTextField nameInput;
     private JTextField periodInput;
     private JTextField absencesInput;
-    private JComboBox scheduleInput;
+    private JComboBox<String> scheduleInput;
     private JTextField courseInput;
     private JButton addBTN;
     private JButton backButton;

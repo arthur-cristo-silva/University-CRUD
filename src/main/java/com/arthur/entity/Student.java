@@ -1,7 +1,6 @@
 package com.arthur.entity;
 
 import java.util.InputMismatchException;
-import java.util.Objects;
 
 public class Student extends Person {
     private Long ra;
@@ -30,7 +29,7 @@ public class Student extends Person {
         this.absences = absences;
     }
 
-    public static Student getStudent(String name, String course, int period, String schedule, int absences) throws Exception {
+    public static Student getStudent(String name, String course, int period, String schedule, int absences) throws InputMismatchException {
         if (name.isEmpty()) {
             throw new InputMismatchException("Por favor, digite um nome.");
         } else if (course.isEmpty()) {
@@ -39,7 +38,7 @@ public class Student extends Person {
         return new Student(name, course, period, schedule, absences);
     }
 
-    public static Student getStudent(long ra, String name, String course, int period, String schedule, int absences) throws Exception {
+    public static Student getStudent(long ra, String name, String course, int period, String schedule, int absences) throws InputMismatchException {
         period = period == 0 ? 1 : period;
         if (name.isEmpty()) {
             throw new InputMismatchException("Por favor, digite um nome.");

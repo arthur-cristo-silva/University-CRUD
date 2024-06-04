@@ -3,7 +3,6 @@ package com.arthur.dao;
 import com.arthur.entity.Classes;
 import com.arthur.factory.ConnectionFactory;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
