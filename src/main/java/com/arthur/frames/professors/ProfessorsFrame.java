@@ -1,6 +1,7 @@
 package com.arthur.frames.professors;
 
 import com.arthur.dao.ProfessorDAO;
+import com.arthur.excepction.ProfessorNotFound;
 import com.arthur.factory.RandomProfessor;
 import com.arthur.frames.MainFrame;
 import com.arthur.entity.Professor;
@@ -55,7 +56,7 @@ public class ProfessorsFrame extends JFrame {
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
             } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
             }
         });
         // Deleta do banco de dados professor selecionado
@@ -64,53 +65,58 @@ public class ProfessorsFrame extends JFrame {
                 long ra = Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString());
                 // Confirma se o usuário realmente deseja remover o cadastro do aluno.
                 int result = JOptionPane.showConfirmDialog(mainPanel,
-                        "Você deseja realmente remover o cadastro do aluno de RA: " + ra + "?", null, JOptionPane.YES_NO_OPTION);
+                        "Você deseja realmente remover o cadastro do professor de RA: " + ra + "?", null, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
                     ProfessorDAO.delete(ra);
                 }
             } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
             } finally {
                 getAll();
             }
         });
+
         // Pesquisa por professor pelo seu RA
         searchBTN.addActionListener(e -> {
-            Object[][] data = null;
-            String[] col = null;
+            Object[][] data;
+            String[] col;
             try {
                 Professor professor = ProfessorDAO.findByRA(raInput.getText());
+                raInput.setText("");
                 if (professor.getRa() == null) {
-                    throw new Exception("Nenhum professor com este RA foi encontrado.");
+                    throw new ProfessorNotFound();
                 }
-                    col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
-                    data = new Object[1][col.length];
-                    data[0][0] = professor.getRa();
-                    data[0][1] = professor.getName();
-                    data[0][2] = professor.getEmail();
-                    data[0][3] = professor.getPhoneNumber();
-                    data[0][4] = professor.getWorkload();
-            } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar professor.");
-            } catch (NumberFormatException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, h.getMessage());
-            } finally {
+                col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
+                data = new Object[1][col.length];
+                data[0][0] = professor.getRa();
+                data[0][1] = professor.getName();
+                data[0][2] = professor.getEmail();
+                data[0][3] = professor.getPhoneNumber();
+                data[0][4] = professor.getWorkload();
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
-                raInput.setText("");
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+            } catch (NumberFormatException g) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira um RA válido.");
+            } catch (ProfessorNotFound h) {
+                JOptionPane.showMessageDialog(mainPanel, h);
             }
         });
 
+        // Pesquisa por professor pelo seu nome
         searchNameBTN.addActionListener(e -> {
-            Object[][] data = null;
-            String[] col = null;
+            Object[][] data;
+            String[] col;
             try {
                 List<Professor> professors;
                 professors = ProfessorDAO.getByName(searchNameInput.getText());
+                if (professors.isEmpty()) {
+                    throw new ProfessorNotFound();
+                }
+                searchNameInput.setText("");
                 col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
                 data = new Object[professors.size()][col.length];
                 for (int i = 0; i < professors.size(); i++) {
@@ -120,21 +126,21 @@ public class ProfessorsFrame extends JFrame {
                     data[i][3] = professors.get(i).getPhoneNumber();
                     data[i][4] = professors.get(i).getWorkload();
                 }
-            } catch (Exception f) {
-                JOptionPane.showMessageDialog(mainPanel, "ERRROR");
-            } finally {
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
-                searchNameInput.setText("");
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+            } catch (ProfessorNotFound g) {
+                JOptionPane.showMessageDialog(mainPanel, g);
+            } catch (Exception h) {
+                System.out.println(h.getMessage());
             }
         });
 
-        // Volta para a janela anterior
-        backBTN.addActionListener(e -> {
-            new MainFrame();
-            dispose();
-        });
+        // Exibe todos os professores
         getAllBTN.addActionListener(e -> getAll());
+
+        // Cadastra professor ficticio
         randomBTN.addActionListener(e -> {
             try {
                 ProfessorDAO.save(RandomProfessor.getProfessor());
@@ -143,13 +149,21 @@ public class ProfessorsFrame extends JFrame {
             }
             getAll();
         });
+
+        // Ordena professores por RA ou Nome
         sortedComboBox.addActionListener(e -> getAll());
+
+        // Volta para a janela anterior
+        backBTN.addActionListener(e -> {
+            new MainFrame();
+            dispose();
+        });
     }
 
     // Exibe todos os professores
     private void getAll() {
-        Object[][] data = null;
-        String[] col = null;
+        Object[][] data;
+        String[] col;
         try {
             List<Professor> professors;
             professors = ProfessorDAO.findAll(sortedComboBox.getSelectedIndex() != 1);
@@ -160,11 +174,10 @@ public class ProfessorsFrame extends JFrame {
                 data[i][1] = professors.get(i).getName();
                 data[i][2] = professors.get(i).getEmail();
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
-        } finally {
             table1.setModel(new DefaultTableModel(data, col));
             table1.setDefaultEditor(Object.class, null);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
         }
     }
 }
