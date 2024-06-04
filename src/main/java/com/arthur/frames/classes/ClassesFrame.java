@@ -1,6 +1,8 @@
 package com.arthur.frames.classes;
 
 import com.arthur.dao.ClassesDAO;
+import com.arthur.dao.ProfessorDAO;
+import com.arthur.dao.UcDAO;
 import com.arthur.entity.Classes;
 import com.arthur.frames.MainFrame;
 
@@ -22,12 +24,10 @@ public class ClassesFrame extends JFrame {
     private JButton backBTN;
     private JButton getAllBTN;
     private JTextField searchInput;
-    private JButton searchNameBTN;
-    private JTextField searchNameInput;
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
-    // Janela para gerenciar alunos
+    // Janela para gerenciar turmas
     public ClassesFrame() {
         setContentPane(mainPanel);
         setTitle("Turmas");
@@ -37,17 +37,17 @@ public class ClassesFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         getAll();
-        // Vai para janela de criação de UC
+        // Vai para janela de criação de turmas
         addBTN.addActionListener(e -> {
             new AddClasses();
             dispose();
         });
-        // Vai para janela de atualização de UC
+        // Vai para janela de atualização de turmas
         updateBTN.addActionListener(e -> {
             try {
                 String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
                 Classes classes = ClassesDAO.getByCode(code);
-                // new UpdateClass(classes);
+                new UpdateClasses(classes);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
@@ -57,7 +57,7 @@ public class ClassesFrame extends JFrame {
                 throw new RuntimeException(h);
             }
         });
-        // Deleta do banco de dados UC selecionada
+        // Deleta do banco de dados turmas selecionada
         deleteBTN.addActionListener(e -> {
             try {
                 String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
@@ -85,11 +85,11 @@ public class ClassesFrame extends JFrame {
                 } else {
                     Object[][] data;
                     String[] col;
-                    col = new String[]{"Código", "Nome", "Tipo", "Alunos"};
+                    col = new String[]{"Código", "UC", "Professor", "Alunos"};
                     data = new Object[1][col.length];
                     data[0][0] = classes.getCode();
-                    data[0][1] = classes.getUc();
-                    data[0][2] = classes.getProfessor();
+                    data[0][1] = UcDAO.getNameByCode(classes.getUc());
+                    data[0][2] = ProfessorDAO.getNameByRa(classes.getProfessor());
                     data[0][3] = ClassesDAO.count(classes.getCode());
                     table1.setModel(new DefaultTableModel(data, col));
                     table1.setDefaultEditor(Object.class, null);
@@ -117,16 +117,17 @@ public class ClassesFrame extends JFrame {
         try {
             List<Classes> classes;
             classes = ClassesDAO.getAll();
-            col = new String[]{"Código", "Nome", "Tipo", "Alunos"};
+            col = new String[]{"Código", "UC", "Professor", "Alunos"};
             data = new Object[classes.size()][col.length];
             for (int i = 0; i < classes.size(); i++) {
                 data[i][0] = classes.get(i).getCode();
-                data[i][1] = classes.get(i).getUc();
-                data[i][2] = classes.get(i).getProfessor();
+                data[i][1] = UcDAO.getNameByCode(classes.get(i).getUc());
+                data[i][2] = ProfessorDAO.getNameByRa(classes.get(i).getProfessor());
                 data[i][3] = ClassesDAO.count(classes.get(i).getCode());
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
+            System.out.println(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {

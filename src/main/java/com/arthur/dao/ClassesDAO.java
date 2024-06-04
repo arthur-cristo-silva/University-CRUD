@@ -18,7 +18,7 @@ public class ClassesDAO {
              PreparedStatement classPs = con.prepareStatement(classesSql)) {
             classPs.setString(1, classes.getCode());
             classPs.setString(2, classes.getUc());
-            classPs.setString(3, classes.getProfessor());
+            classPs.setLong(3, classes.getProfessor());
             classPs.executeUpdate();
         }
     }
@@ -27,7 +27,7 @@ public class ClassesDAO {
         String sql = "UPDATE classes SET professor_ra = ?, discipline_code = ? WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement classPs = con.prepareStatement(sql)) {
-            classPs.setString(1, classes.getProfessor());
+            classPs.setLong(1, classes.getProfessor());
             classPs.setString(2, classes.getUc());
             classPs.setString(3, classes.getCode());
             classPs.executeUpdate();
@@ -35,7 +35,7 @@ public class ClassesDAO {
     }
 
     public static int count(String code) throws Exception {
-        String sql = "SELECT COUNT(*) FROM student_classes WHERE class_code = ?";
+        String sql = "SELECT COUNT(*) FROM students_class WHERE class_code = ?";
         int count = 0;
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement classPs = con.prepareStatement(sql)) {
@@ -59,7 +59,7 @@ public class ClassesDAO {
                 if (rs.next()) {
                     classes.setCode(rs.getString(1));
                     classes.setUc(rs.getString(2));
-                    classes.setProfessor(rs.getString(3));
+                    classes.setProfessor(rs.getLong(3));
                 }
             }
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class ClassesDAO {
                 Classes classes = new Classes();
                 classes.setCode(rs.getString(1));
                 classes.setUc(rs.getString(2));
-                classes.setProfessor(rs.getString(3));
+                classes.setProfessor(rs.getLong(3));
                 list.add(classes);
             }
         } catch (Exception e) {

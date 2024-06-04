@@ -2,13 +2,13 @@ package com.arthur.entity;
 
 public class Classes {
     private String code;
-    private String professor;
+    private Long professor;
     private String uc;
 
     public Classes() {
     }
 
-    public Classes(String code, String professor, String uc) {
+    public Classes(String code, Long professor, String uc) {
         this.code = code;
         this.professor = professor;
         this.uc = uc;
@@ -22,11 +22,11 @@ public class Classes {
         this.code = code;
     }
 
-    public String getProfessor() {
+    public Long getProfessor() {
         return professor;
     }
 
-    public void setProfessor(String professor) {
+    public void setProfessor(Long professor) {
         this.professor = professor;
     }
 

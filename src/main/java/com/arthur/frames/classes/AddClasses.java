@@ -10,17 +10,13 @@ import com.arthur.entity.Uc;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
 
 public class AddClasses extends JFrame {
 
     // Elementos da janela
     private JLabel titleTXT;
     private JTextField codeInput;
-    private JTextField periodInput;
-    private JTextField absencesInput;
-    private JComboBox scheduleInput;
-    private JTextField typeInput;
     private JButton addBTN;
     private JButton backButton;
     private JPanel mainPanel;
@@ -30,7 +26,7 @@ public class AddClasses extends JFrame {
     private JComboBox professorCB;
     private JLabel professorTXT;
 
-    // Cria novo aluno no banco de dados
+    // Cria nova turma no banco de dados
     public AddClasses() {
         setContentPane(mainPanel);
         setTitle("Adicionar Turma");
@@ -48,7 +44,8 @@ public class AddClasses extends JFrame {
             for (Uc uc : ucs) {
                 ucCB.addItem(uc.getCode());
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         addBTN.addActionListener(e -> {
             try {
                 ClassesDAO.save(getClasses());
@@ -57,6 +54,7 @@ public class AddClasses extends JFrame {
                 dispose();
             } catch (SQLException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar turma no banco de dados.");
+                System.out.println(g);
             } catch (Exception h) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
                 throw new RuntimeException(h);
@@ -69,11 +67,11 @@ public class AddClasses extends JFrame {
         });
     }
 
-    // Metodo para colher informações do aluno
+    // Metodo para colher informações da turma
     private Classes getClasses() throws Exception {
         String code = codeInput.getText();
-        String uc = ucCB.getSelectedItem().toString();
-        String prof = ProfessorDAO.getRaByName(professorCB.getSelectedItem().toString());
+        String uc = Objects.requireNonNull(ucCB.getSelectedItem()).toString();
+        long prof = ProfessorDAO.getRaByName(Objects.requireNonNull(professorCB.getSelectedItem()).toString());
         if (code.isEmpty()) {
             throw new Exception();
         }
