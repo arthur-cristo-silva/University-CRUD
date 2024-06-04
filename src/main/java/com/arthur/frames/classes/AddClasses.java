@@ -22,8 +22,8 @@ public class AddClasses extends JFrame {
     private JPanel mainPanel;
     private JLabel nameTXT;
     private JLabel ucTXT;
-    private JComboBox ucCB;
-    private JComboBox professorCB;
+    private JComboBox<String> ucCB;
+    private JComboBox<String> professorCB;
     private JLabel professorTXT;
 
     // Cria nova turma no banco de dados
@@ -45,6 +45,7 @@ public class AddClasses extends JFrame {
                 ucCB.addItem(uc.getCode());
             }
         } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         addBTN.addActionListener(e -> {
             try {
@@ -54,7 +55,7 @@ public class AddClasses extends JFrame {
                 dispose();
             } catch (SQLException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar turma no banco de dados.");
-                System.out.println(g);
+                throw new RuntimeException(g);
             } catch (Exception h) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
                 throw new RuntimeException(h);

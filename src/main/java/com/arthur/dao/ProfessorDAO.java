@@ -149,8 +149,8 @@ public class ProfessorDAO {
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
                 "WHERE pe.name = ?";
-        try(Connection con = ConnectionFactory.createConnection();
-        PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConnectionFactory.createConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, name);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -162,13 +162,14 @@ public class ProfessorDAO {
         }
         return -1;
     }
+
     public static String getNameByRa(long ra) {
         String sql = "SELECT p.ra, pe.name " +
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
                 "WHERE pe.ra = ?";
-        try(Connection con = ConnectionFactory.createConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConnectionFactory.createConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setLong(1, ra);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

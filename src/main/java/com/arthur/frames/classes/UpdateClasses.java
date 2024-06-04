@@ -28,7 +28,7 @@ public class UpdateClasses extends JFrame {
     private JLabel titleTXT;
 
     // Atualiza informações de turma do banco de dados
-    public UpdateClasses(Classes classes) {
+    public UpdateClasses(Classes classes) throws Exception {
         setContentPane(mainPanel);
         setTitle("Atualizar Turma");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
