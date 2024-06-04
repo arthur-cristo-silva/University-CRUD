@@ -24,7 +24,9 @@ public class ProfessorsFrame extends JFrame {
     private JButton backBTN;
     private JButton getAllBTN;
     private JButton randomBTN;
-    private JComboBox sortedComboBox;
+    private JComboBox<String> sortedComboBox;
+    private JTextField searchNameInput;
+    private JButton searchNameBTN;
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
@@ -76,23 +78,57 @@ public class ProfessorsFrame extends JFrame {
         });
         // Pesquisa por professor pelo seu RA
         searchBTN.addActionListener(e -> {
+            Object[][] data = null;
+            String[] col = null;
             try {
                 Professor professor = ProfessorDAO.findByRA(raInput.getText());
                 if (professor.getRa() == null) {
-                    JOptionPane.showMessageDialog(mainPanel, "Nenhum professor com este RA foi encontrado.");
-                } else {
-                    new ProfessorView(professor);
+                    throw new Exception("Nenhum professor com este RA foi encontrado.");
                 }
+                    col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
+                    data = new Object[1][col.length];
+                    data[0][0] = professor.getRa();
+                    data[0][1] = professor.getName();
+                    data[0][2] = professor.getEmail();
+                    data[0][3] = professor.getPhoneNumber();
+                    data[0][4] = professor.getWorkload();
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar professor.");
             } catch (NumberFormatException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
+            } catch (Exception h) {
+                JOptionPane.showMessageDialog(mainPanel, h.getMessage());
             } finally {
+                table1.setModel(new DefaultTableModel(data, col));
+                table1.setDefaultEditor(Object.class, null);
                 raInput.setText("");
             }
         });
+
+        searchNameBTN.addActionListener(e -> {
+            Object[][] data = null;
+            String[] col = null;
+            try {
+                List<Professor> professors;
+                professors = ProfessorDAO.getByName(searchNameInput.getText());
+                col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
+                data = new Object[professors.size()][col.length];
+                for (int i = 0; i < professors.size(); i++) {
+                    data[i][0] = professors.get(i).getRa();
+                    data[i][1] = professors.get(i).getName();
+                    data[i][2] = professors.get(i).getEmail();
+                    data[i][3] = professors.get(i).getPhoneNumber();
+                    data[i][4] = professors.get(i).getWorkload();
+                }
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "ERRROR");
+            } finally {
+                table1.setModel(new DefaultTableModel(data, col));
+                table1.setDefaultEditor(Object.class, null);
+                searchNameInput.setText("");
+            }
+        });
+
         // Volta para a janela anterior
         backBTN.addActionListener(e -> {
             new MainFrame();
