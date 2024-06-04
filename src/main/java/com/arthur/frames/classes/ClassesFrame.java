@@ -4,6 +4,7 @@ import com.arthur.dao.ClassesDAO;
 import com.arthur.dao.ProfessorDAO;
 import com.arthur.dao.UcDAO;
 import com.arthur.entity.Classes;
+import com.arthur.excepction.ClassNotFound;
 import com.arthur.frames.MainFrame;
 
 import javax.swing.*;
@@ -82,7 +83,7 @@ public class ClassesFrame extends JFrame {
                 Classes classes = ClassesDAO.getByCode(searchInput.getText());
                 searchInput.setText("");
                 if (classes.getCode() == null) {
-                    JOptionPane.showMessageDialog(mainPanel, "Nenhuma turma com este código foi encontrada.");
+                    throw new ClassNotFound();
                 }
                 String[] col = new String[]{"Código", "UC", "Professor", "Alunos"};
                 Object[][] data = new Object[1][col.length];
@@ -92,6 +93,8 @@ public class ClassesFrame extends JFrame {
                 data[0][3] = ClassesDAO.count(classes.getCode());
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
+            } catch (ClassNotFound f) {
+                JOptionPane.showMessageDialog(mainPanel, f);
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (Exception f) {
