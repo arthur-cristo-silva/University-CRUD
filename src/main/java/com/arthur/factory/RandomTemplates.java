@@ -31,8 +31,8 @@ public class RandomTemplates {
         return String.format("+55 (%02d) 9%04d-%04d", ddd, number / 10000, number % 10000);
     }
 
-    public static String getRandomEmail() {
-        return NAMES[r.nextInt(NAMES.length)].toLowerCase() + EMAILS[r.nextInt(EMAILS.length)];
+    public static String getRandomEmail(String name) {
+        return name.toLowerCase() + EMAILS[r.nextInt(EMAILS.length)];
     }
 
     public static String getRandomDiscipline() {

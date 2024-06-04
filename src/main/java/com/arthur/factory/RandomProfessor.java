@@ -10,7 +10,7 @@ public class RandomProfessor {
         Professor professor = new Professor();
         professor.setName(RandomTemplates.getRandomName());
         professor.setPhoneNumber(RandomTemplates.getRandomPhoneNumber());
-        professor.setEmail(RandomTemplates.getRandomEmail());
+        professor.setEmail(RandomTemplates.getRandomEmail(professor.getName().split(" ")[0]));
         professor.setWorkload(r.nextInt(44));
         return professor;
     }
