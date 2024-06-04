@@ -98,4 +98,18 @@ public class UcDAO {
             ps.executeUpdate();
         }
     }
+
+    public static String getNameByCode(String code) throws Exception {
+        String sql = "SELECT * FROM disciplines WHERE code = ?";
+        try (Connection con = ConnectionFactory.createConnection();
+        PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, code);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("name")+" "+rs.getString("type");
+                }
+            }
+        }
+        return null;
+    }
 }

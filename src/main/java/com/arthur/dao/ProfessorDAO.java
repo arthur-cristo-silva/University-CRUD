@@ -144,7 +144,7 @@ public class ProfessorDAO {
         }
     }
 
-    public static String getRaByName(String name) {
+    public static long getRaByName(String name) {
         String sql = "SELECT p.ra, pe.name " +
                 "FROM professors AS p " +
                 "INNER JOIN people AS pe ON p.ra = pe.ra " +
@@ -154,7 +154,25 @@ public class ProfessorDAO {
             ps.setString(1, name);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("ra");
+                    return rs.getLong("ra");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
+    public static String getNameByRa(long ra) {
+        String sql = "SELECT p.ra, pe.name " +
+                "FROM professors AS p " +
+                "INNER JOIN people AS pe ON p.ra = pe.ra " +
+                "WHERE pe.ra = ?";
+        try(Connection con = ConnectionFactory.createConnection();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, ra);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("name");
                 }
             }
         } catch (Exception e) {
