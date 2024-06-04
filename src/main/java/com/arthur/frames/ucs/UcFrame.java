@@ -35,7 +35,7 @@ public class UcFrame extends JFrame {
         setTitle("Unidades Curriculares");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         getAll();

@@ -33,7 +33,7 @@ public class ClassesFrame extends JFrame {
         setTitle("Turmas");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         getAll();

@@ -34,7 +34,7 @@ public class ProfessorsFrame extends JFrame {
         setTitle("Professores");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         getAll();

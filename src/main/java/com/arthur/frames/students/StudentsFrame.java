@@ -35,7 +35,7 @@ public class StudentsFrame extends JFrame {
         setTitle("Alunos");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         getAll();

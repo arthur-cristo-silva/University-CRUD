@@ -27,7 +27,7 @@ public class AddUc extends JFrame {
         setContentPane(mainPanel);
         setTitle("Adicionar UC");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);

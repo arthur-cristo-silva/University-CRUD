@@ -6,8 +6,6 @@ import com.arthur.frames.students.StudentsFrame;
 import com.arthur.frames.ucs.UcFrame;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private JButton professorBTN;
@@ -24,7 +22,7 @@ public class MainFrame extends JFrame {
         setTitle("Universidade");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         // Vai para a janela de estudantes

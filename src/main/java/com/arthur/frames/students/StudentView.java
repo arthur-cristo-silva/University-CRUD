@@ -17,7 +17,7 @@ public class StudentView extends JFrame {
         setTitle(student.getName());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         name.setText(student.getName());

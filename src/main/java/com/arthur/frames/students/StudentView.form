@@ -12,7 +12,7 @@
     <children>
       <component id="c02c9" class="javax.swing.JLabel" binding="name">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="24" style="1"/>
@@ -22,7 +22,7 @@
       </component>
       <component id="28087" class="javax.swing.JLabel" binding="course">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="12" style="0"/>
@@ -70,12 +70,12 @@
           </grid>
         </constraints>
       </vspacer>
-      <vspacer id="b0ea9">
+      <vspacer id="fbe6e">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-            <minimum-size width="-1" height="5"/>
-            <preferred-size width="0" height="10"/>
-            <maximum-size width="-1" height="15"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="10"/>
+            <preferred-size width="0" height="20"/>
+            <maximum-size width="-1" height="30"/>
           </grid>
         </constraints>
       </vspacer>

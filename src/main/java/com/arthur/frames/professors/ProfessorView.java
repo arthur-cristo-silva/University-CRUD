@@ -16,7 +16,7 @@ public class ProfessorView extends JFrame {
         setTitle(professor.getName());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
         name.setText(professor.getName());

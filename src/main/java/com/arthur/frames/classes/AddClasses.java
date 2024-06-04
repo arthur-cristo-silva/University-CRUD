@@ -31,7 +31,7 @@ public class AddClasses extends JFrame {
         setContentPane(mainPanel);
         setTitle("Adicionar Turma");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(480, 400);
+        setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
