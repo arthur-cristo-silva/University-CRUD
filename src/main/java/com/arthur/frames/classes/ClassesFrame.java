@@ -51,10 +51,10 @@ public class ClassesFrame extends JFrame {
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
-                getAll();
-                throw new RuntimeException(f);
-            } catch (Exception h) {
-                throw new RuntimeException(h);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Deleta do banco de dados turmas selecionada
@@ -66,71 +66,68 @@ public class ClassesFrame extends JFrame {
                         "Você deseja realmente remover o cadastro da turma de código: " + code + "?", null, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
                     ClassesDAO.delete(code);
+                    getAll();
                 }
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            } finally {
-                getAll();
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Pesquisa por aluno pelo seu RA
         searchCodeBTN.addActionListener(e -> {
             try {
                 Classes classes = ClassesDAO.getByCode(searchInput.getText());
+                searchInput.setText("");
                 if (classes.getCode() == null) {
                     JOptionPane.showMessageDialog(mainPanel, "Nenhuma turma com este código foi encontrada.");
-                    getAll();
-                } else {
-                    Object[][] data;
-                    String[] col;
-                    col = new String[]{"Código", "UC", "Professor", "Alunos"};
-                    data = new Object[1][col.length];
-                    data[0][0] = classes.getCode();
-                    data[0][1] = UcDAO.getNameByCode(classes.getUc());
-                    data[0][2] = ProfessorDAO.getNameByRa(classes.getProfessor());
-                    data[0][3] = ClassesDAO.count(classes.getCode());
-                    table1.setModel(new DefaultTableModel(data, col));
-                    table1.setDefaultEditor(Object.class, null);
                 }
+                String[] col = new String[]{"Código", "UC", "Professor", "Alunos"};
+                Object[][] data = new Object[1][col.length];
+                data[0][0] = classes.getCode();
+                data[0][1] = UcDAO.getNameByCode(classes.getUc());
+                data[0][2] = ProfessorDAO.getNameByRa(classes.getProfessor());
+                data[0][3] = ClassesDAO.count(classes.getCode());
+                table1.setModel(new DefaultTableModel(data, col));
+                table1.setDefaultEditor(Object.class, null);
             } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
-            } catch (Exception g) {
-                JOptionPane.showMessageDialog(mainPanel, "Um erro ocorreu");
-            } finally {
-                searchInput.setText("");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
+
+        // Exibe todas as turmas
+        getAllBTN.addActionListener(e -> getAll());
+
         // Volta para a janela anterior
         backBTN.addActionListener(e -> {
             new MainFrame();
             dispose();
         });
-        getAllBTN.addActionListener(e -> getAll());
     }
 
     // Exibe todos as turmas
     private void getAll() {
-        Object[][] data = null;
-        String[] col = null;
         try {
             List<Classes> classes;
             classes = ClassesDAO.getAll();
-            col = new String[]{"Código", "UC", "Professor", "Alunos"};
-            data = new Object[classes.size()][col.length];
+            String[] col = new String[]{"Código", "UC", "Professor", "Alunos"};
+            Object[][] data = new Object[classes.size()][col.length];
             for (int i = 0; i < classes.size(); i++) {
                 data[i][0] = classes.get(i).getCode();
                 data[i][1] = UcDAO.getNameByCode(classes.get(i).getUc());
                 data[i][2] = ProfessorDAO.getNameByRa(classes.get(i).getProfessor());
                 data[i][3] = ClassesDAO.count(classes.get(i).getCode());
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
-            throw new RuntimeException(e);
-        }  finally {
             table1.setModel(new DefaultTableModel(data, col));
             table1.setDefaultEditor(Object.class, null);
+        } catch (SQLException f) {
+            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+        } catch (Exception f) {
+            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
         }
     }
 }

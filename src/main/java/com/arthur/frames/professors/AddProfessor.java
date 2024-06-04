@@ -39,11 +39,11 @@ public class AddProfessor extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Professor cadastrado!");
                 new ProfessorsFrame();
                 dispose();
-            } catch (SQLException g) {
+            } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
-            } catch (InputMismatchException | NumberFormatException g) {
-                System.out.println(g.getMessage());
-            } catch (Exception g) {
+            } catch (InputMismatchException | NumberFormatException f) {
+                System.out.println(f.getMessage());
+            } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu inesperado..");
             }
         });

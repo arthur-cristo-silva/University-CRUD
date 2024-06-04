@@ -56,7 +56,7 @@ public class UcFrame extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma UC.");
                 getAll();
             } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro inesperado ocorreu.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Deleta do banco de dados UC selecionada
@@ -68,13 +68,12 @@ public class UcFrame extends JFrame {
                         "Você deseja realmente remover o cadastro da UC de código: " + code + "?", null, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
                     UcDAO.delete(code);
+                    getAll();
                 }
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma UC.");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro inesperado ocorreu.");
-            } finally {
-                getAll();
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Pesquisa por aluno pelo seu RA
@@ -85,10 +84,8 @@ public class UcFrame extends JFrame {
                 if (uc.getCode() == null) {
                     throw new UcNotFound();
                 }
-                Object[][] data;
-                String[] col;
-                col = new String[]{"Código", "Nome", "Tipo"};
-                data = new Object[1][col.length];
+                String[] col = new String[]{"Código", "Nome", "Tipo"};
+                Object[][] data = new Object[1][col.length];
                 data[0][0] = uc.getCode();
                 data[0][1] = uc.getName();
                 data[0][2] = uc.getType();
@@ -99,21 +96,23 @@ public class UcFrame extends JFrame {
             } catch (InputMismatchException f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception f) {
-                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro inesperado ocorreu.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
+
+        // Exibe todas as UCs
         getAllBTN.addActionListener(e -> getAll());
+
+        // Cadastra UC ficticia
         randomBTN.addActionListener(e -> {
             try {
                 UcDAO.save(RandomUc.getUc());
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+                getAll();
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             }
-            getAll();
         });
         searchNameBTN.addActionListener(e -> {
-            Object[][] data;
-            String[] col;
             try {
                 List<Uc> ucs;
                 ucs = UcDAO.getByName(searchNameInput.getText());
@@ -121,8 +120,8 @@ public class UcFrame extends JFrame {
                 if (ucs.isEmpty()) {
                     throw new UcNotFound();
                 }
-                col = new String[]{"Código", "Nome", "Tipo"};
-                data = new Object[ucs.size()][col.length];
+                String[] col = new String[]{"Código", "Nome", "Tipo"};
+                Object[][] data = new Object[ucs.size()][col.length];
                 for (int i = 0; i < ucs.size(); i++) {
                     data[i][0] = ucs.get(i).getCode();
                     data[i][1] = ucs.get(i).getName();
@@ -135,7 +134,7 @@ public class UcFrame extends JFrame {
             } catch (UcNotFound f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception f) {
-                System.out.println(f.getMessage());
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Volta para a janela anterior
@@ -147,13 +146,11 @@ public class UcFrame extends JFrame {
 
     // Exibe todos os alunos
     private void getAll() {
-        Object[][] data;
-        String[] col;
         try {
             List<Uc> ucs;
             ucs = UcDAO.getAll();
-            col = new String[]{"Código", "Nome", "Tipo"};
-            data = new Object[ucs.size()][col.length];
+            String[] col = new String[]{"Código", "Nome", "Tipo"};
+            Object[][] data = new Object[ucs.size()][col.length];
             for (int i = 0; i < ucs.size(); i++) {
                 data[i][0] = ucs.get(i).getCode();
                 data[i][1] = ucs.get(i).getName();

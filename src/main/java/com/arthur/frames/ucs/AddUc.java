@@ -42,7 +42,7 @@ public class AddUc extends JFrame {
             } catch (InputMismatchException f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception f) {
-                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu inesperado.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
                 f.printStackTrace();
             }
         });

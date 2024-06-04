@@ -55,7 +55,7 @@ public class ProfessorsFrame extends JFrame {
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
-            } catch (SQLException ex) {
+            } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             }
         });
@@ -68,28 +68,25 @@ public class ProfessorsFrame extends JFrame {
                         "Você deseja realmente remover o cadastro do professor de RA: " + ra + "?", null, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
                     ProfessorDAO.delete(ra);
+                    getAll();
                 }
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
-            } finally {
-                getAll();
             }
         });
 
         // Pesquisa por professor pelo seu RA
         searchBTN.addActionListener(e -> {
-            Object[][] data;
-            String[] col;
             try {
                 Professor professor = ProfessorDAO.findByRA(raInput.getText());
                 raInput.setText("");
                 if (professor.getRa() == null) {
                     throw new ProfessorNotFound();
                 }
-                col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
-                data = new Object[1][col.length];
+                String[] col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
+                Object[][] data = new Object[1][col.length];
                 data[0][0] = professor.getRa();
                 data[0][1] = professor.getName();
                 data[0][2] = professor.getEmail();
@@ -108,8 +105,6 @@ public class ProfessorsFrame extends JFrame {
 
         // Pesquisa por professor pelo seu nome
         searchNameBTN.addActionListener(e -> {
-            Object[][] data;
-            String[] col;
             try {
                 List<Professor> professors;
                 professors = ProfessorDAO.getByName(searchNameInput.getText());
@@ -117,8 +112,8 @@ public class ProfessorsFrame extends JFrame {
                     throw new ProfessorNotFound();
                 }
                 searchNameInput.setText("");
-                col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
-                data = new Object[professors.size()][col.length];
+                String[] col = new String[]{"RA", "Nome", "E-mail", "Telefone", "Carga Horária"};
+                Object[][] data = new Object[professors.size()][col.length];
                 for (int i = 0; i < professors.size(); i++) {
                     data[i][0] = professors.get(i).getRa();
                     data[i][1] = professors.get(i).getName();
@@ -133,7 +128,7 @@ public class ProfessorsFrame extends JFrame {
             } catch (ProfessorNotFound g) {
                 JOptionPane.showMessageDialog(mainPanel, g);
             } catch (Exception h) {
-                System.out.println(h.getMessage());
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
 
@@ -144,10 +139,10 @@ public class ProfessorsFrame extends JFrame {
         randomBTN.addActionListener(e -> {
             try {
                 ProfessorDAO.save(RandomProfessor.getProfessor());
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+                getAll();
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             }
-            getAll();
         });
 
         // Ordena professores por RA ou Nome
@@ -162,13 +157,11 @@ public class ProfessorsFrame extends JFrame {
 
     // Exibe todos os professores
     private void getAll() {
-        Object[][] data;
-        String[] col;
         try {
             List<Professor> professors;
             professors = ProfessorDAO.findAll(sortedComboBox.getSelectedIndex() != 1);
-            col = new String[]{"RA", "Nome", "Email"};
-            data = new Object[professors.size()][col.length];
+            String[] col = new String[]{"RA", "Nome", "Email"};
+            Object[][] data = new Object[professors.size()][col.length];
             for (int i = 0; i < professors.size(); i++) {
                 data[i][0] = professors.get(i).getRa();
                 data[i][1] = professors.get(i).getName();
