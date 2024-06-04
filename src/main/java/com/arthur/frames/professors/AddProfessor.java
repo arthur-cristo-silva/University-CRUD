@@ -40,11 +40,11 @@ public class AddProfessor extends JFrame {
                 new ProfessorsFrame();
                 dispose();
             } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (InputMismatchException | NumberFormatException g) {
                 System.out.println(g.getMessage());
             } catch (Exception g) {
-                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu inesperado..");
             }
         });
         // Volta para janela anterior

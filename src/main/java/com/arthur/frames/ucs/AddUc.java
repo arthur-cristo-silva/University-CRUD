@@ -5,6 +5,7 @@ import com.arthur.entity.Uc;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Random;
 
 public class AddUc extends JFrame {
@@ -33,15 +34,17 @@ public class AddUc extends JFrame {
         setVisible(true);
         addBTN.addActionListener(e -> {
             try {
-                UcDAO.save(getUc());
+                UcDAO.save(Uc.getUc(nameInput.getText(), typeInput.getText()));
                 JOptionPane.showMessageDialog(mainPanel, "UC adicionada!");
                 new UcFrame();
                 dispose();
-            } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar UC no banco de dados.");
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (InputMismatchException f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu inesperado.");
+                f.printStackTrace();
             }
         });
         // Volta para a janela anterior
@@ -50,17 +53,4 @@ public class AddUc extends JFrame {
             dispose();
         });
     }
-
-    // Metodo para colher informações do aluno
-    private Uc getUc() throws Exception {
-        String name = nameInput.getText();
-        String tipo = typeInput.getText();
-        Random r = new Random();
-        String code = name.toUpperCase().substring(0,4) + (""+r.nextInt(9) + r.nextInt(9) + r.nextInt(9));
-        if (name.isEmpty() || tipo.isEmpty()) {
-            throw new Exception();
-        }
-        return new Uc(code, name, tipo);
-    }
-
 }

@@ -56,7 +56,7 @@ public class ProfessorsFrame extends JFrame {
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             }
         });
         // Deleta do banco de dados professor selecionado
@@ -70,7 +70,7 @@ public class ProfessorsFrame extends JFrame {
                     ProfessorDAO.delete(ra);
                 }
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um professor.");
             } finally {
@@ -98,7 +98,7 @@ public class ProfessorsFrame extends JFrame {
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
             } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (NumberFormatException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira um RA válido.");
             } catch (ProfessorNotFound h) {
@@ -129,7 +129,7 @@ public class ProfessorsFrame extends JFrame {
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
             } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (ProfessorNotFound g) {
                 JOptionPane.showMessageDialog(mainPanel, g);
             } catch (Exception h) {
@@ -177,7 +177,7 @@ public class ProfessorsFrame extends JFrame {
             table1.setModel(new DefaultTableModel(data, col));
             table1.setDefaultEditor(Object.class, null);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
         }
     }
 }

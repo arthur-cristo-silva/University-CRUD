@@ -5,6 +5,7 @@ import com.arthur.entity.Uc;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Random;
 
 public class UpdateUc extends JFrame {
@@ -34,15 +35,17 @@ public class UpdateUc extends JFrame {
         typeInput.setText(uc.getType());
         addBTN.addActionListener(e -> {
             try {
-                UcDAO.update(getUc());
+                UcDAO.update(Uc.getUc(nameInput.getText(), typeInput.getText()));
                 JOptionPane.showMessageDialog(mainPanel, "UC atualizada!");
                 new UcFrame();
                 dispose();
-            } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar UC no banco de dados.");
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (InputMismatchException f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu inesperado.");
+                f.printStackTrace();
             }
         });
         // Volta para janela anterior
@@ -50,17 +53,5 @@ public class UpdateUc extends JFrame {
             new UcFrame();
             dispose();
         });
-    }
-
-    // Metodo para colher informações da UC
-    private Uc getUc() throws Exception {
-        String name = nameInput.getText();
-        String type = typeInput.getText();
-        Random r = new Random();
-        String code = name.toUpperCase().substring(0, 4) + ("" + r.nextInt(9) + r.nextInt(9) + r.nextInt(9));
-        if (name.isEmpty() || type.isEmpty()) {
-            throw new Exception();
-        }
-        return new Uc(code, name, type);
     }
 }

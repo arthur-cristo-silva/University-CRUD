@@ -44,7 +44,7 @@ public class UpdateProfessor extends JFrame {
                 new ProfessorsFrame();
                 dispose();
             } catch (SQLException g) {
-                JOptionPane.showMessageDialog(mainPanel, "Erro ao se conectar com o banco de dados.");
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (InputMismatchException | NumberFormatException f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception h) {

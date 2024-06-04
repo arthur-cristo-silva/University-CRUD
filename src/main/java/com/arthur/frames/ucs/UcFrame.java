@@ -2,12 +2,14 @@ package com.arthur.frames.ucs;
 
 import com.arthur.dao.UcDAO;
 import com.arthur.entity.Uc;
+import com.arthur.excepction.UcNotFound;
 import com.arthur.factory.RandomUc;
 import com.arthur.frames.MainFrame;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class UcFrame extends JFrame {
@@ -48,15 +50,13 @@ public class UcFrame extends JFrame {
         updateBTN.addActionListener(e -> {
             try {
                 String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
-                Uc uc = UcDAO.getByCode(code);
-                new UpdateUc(uc);
+                new UpdateUc(UcDAO.getByCode(code));
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma UC.");
                 getAll();
-                throw new RuntimeException(f);
             } catch (Exception h) {
-                throw new RuntimeException(h);
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro inesperado ocorreu.");
             }
         });
         // Deleta do banco de dados UC selecionada
@@ -72,7 +72,7 @@ public class UcFrame extends JFrame {
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma UC.");
             } catch (Exception ex) {
-                throw new RuntimeException(ex);
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro inesperado ocorreu.");
             } finally {
                 getAll();
             }
@@ -81,32 +81,26 @@ public class UcFrame extends JFrame {
         searchCodeBTN.addActionListener(e -> {
             try {
                 Uc uc = UcDAO.getByCode(searchInput.getText());
-                if (uc.getCode() == null) {
-                    JOptionPane.showMessageDialog(mainPanel, "Nenhuma UC com este código foi encontrada.");
-                    getAll();
-                } else {
-                    Object[][] data;
-                    String[] col;
-                    col = new String[]{"Código", "Nome", "Tipo"};
-                    data = new Object[1][col.length];
-                    data[0][0] = uc.getCode();
-                    data[0][1] = uc.getName();
-                    data[0][2] = uc.getType();
-                    table1.setModel(new DefaultTableModel(data, col));
-                    table1.setDefaultEditor(Object.class, null);
-                }
-            } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
-            } catch (Exception g) {
-                JOptionPane.showMessageDialog(mainPanel, "Um erro ocorreu");
-            } finally {
                 searchInput.setText("");
+                if (uc.getCode() == null) {
+                    throw new UcNotFound();
+                }
+                Object[][] data;
+                String[] col;
+                col = new String[]{"Código", "Nome", "Tipo"};
+                data = new Object[1][col.length];
+                data[0][0] = uc.getCode();
+                data[0][1] = uc.getName();
+                data[0][2] = uc.getType();
+                table1.setModel(new DefaultTableModel(data, col));
+                table1.setDefaultEditor(Object.class, null);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (InputMismatchException f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro inesperado ocorreu.");
             }
-        });
-        // Volta para a janela anterior
-        backBTN.addActionListener(e -> {
-            new MainFrame();
-            dispose();
         });
         getAllBTN.addActionListener(e -> getAll());
         randomBTN.addActionListener(e -> {
@@ -118,11 +112,15 @@ public class UcFrame extends JFrame {
             getAll();
         });
         searchNameBTN.addActionListener(e -> {
-            Object[][] data = null;
-            String[] col = null;
+            Object[][] data;
+            String[] col;
             try {
                 List<Uc> ucs;
                 ucs = UcDAO.getByName(searchNameInput.getText());
+                searchNameInput.setText("");
+                if (ucs.isEmpty()) {
+                    throw new UcNotFound();
+                }
                 col = new String[]{"Código", "Nome", "Tipo"};
                 data = new Object[ucs.size()][col.length];
                 for (int i = 0; i < ucs.size(); i++) {
@@ -130,22 +128,27 @@ public class UcFrame extends JFrame {
                     data[i][1] = ucs.get(i).getName();
                     data[i][2] = ucs.get(i).getType();
                 }
-            } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            } finally {
-                searchNameInput.setText("");
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
+            } catch (SQLException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            } catch (UcNotFound f) {
+                JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (Exception f) {
+                System.out.println(f.getMessage());
             }
+        });
+        // Volta para a janela anterior
+        backBTN.addActionListener(e -> {
+            new MainFrame();
+            dispose();
         });
     }
 
     // Exibe todos os alunos
     private void getAll() {
-        Object[][] data = null;
-        String[] col = null;
+        Object[][] data;
+        String[] col;
         try {
             List<Uc> ucs;
             ucs = UcDAO.getAll();
@@ -156,11 +159,10 @@ public class UcFrame extends JFrame {
                 data[i][1] = ucs.get(i).getName();
                 data[i][2] = ucs.get(i).getType();
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(mainPanel, "SQL ERRROR");
-        } finally {
             table1.setModel(new DefaultTableModel(data, col));
             table1.setDefaultEditor(Object.class, null);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
         }
     }
 }
