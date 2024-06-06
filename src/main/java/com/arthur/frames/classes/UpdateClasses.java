@@ -21,14 +21,15 @@ public class UpdateClasses extends JFrame {
     private JTextField codeInput;
     private JComboBox<String> ucCB;
     private JComboBox<String> professorCB;
-    private JButton studentsBTN;
+    private JButton addStudentsBTN;
     private JLabel professorTXT;
     private JLabel ucTXT;
     private JLabel nameTXT;
     private JLabel titleTXT;
+    private JButton removeStudentsBTN;
 
     // Atualiza informações de turma do banco de dados
-    public UpdateClasses(Classes classes) throws Exception {
+    public UpdateClasses(Classes classes) {
         setContentPane(mainPanel);
         setTitle("Atualizar Turma");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,7 +52,11 @@ public class UpdateClasses extends JFrame {
         }
         // Preenche nos inputs a uc e professor do turma
         ucCB.setSelectedItem(classes.getUc());
-        professorCB.setSelectedItem(ProfessorDAO.getNameByRa(classes.getProfessor()));
+        try {
+            professorCB.setSelectedItem(ProfessorDAO.getNameByRa(classes.getProfessor()));
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+        }
         addBTN.addActionListener(e -> {
             try {
                 ClassesDAO.update(getClasses());
@@ -70,8 +75,13 @@ public class UpdateClasses extends JFrame {
             new ClassesFrame();
             dispose();
         });
-        studentsBTN.addActionListener(e -> {
-
+        addStudentsBTN.addActionListener(e -> {
+            new AddStudents(classes.getCode());
+            dispose();
+        });
+        removeStudentsBTN.addActionListener(e -> {
+            new RemoveStudents(classes.getCode());
+            dispose();
         });
     }
 

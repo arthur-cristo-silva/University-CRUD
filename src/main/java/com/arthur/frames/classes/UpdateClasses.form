@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.arthur.frames.classes.UpdateClasses">
-  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="9" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="11" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="25" left="25" bottom="25" right="25"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="448"/>
+      <xy x="20" y="20" width="648" height="448"/>
     </constraints>
     <properties>
       <background color="-16246737"/>
@@ -61,18 +61,9 @@
           <text value="UC:"/>
         </properties>
       </component>
-      <vspacer id="7f56f">
-        <constraints>
-          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-            <minimum-size width="-1" height="1"/>
-            <preferred-size width="-1" height="1"/>
-            <maximum-size width="-1" height="1"/>
-          </grid>
-        </constraints>
-      </vspacer>
       <component id="7edb8" class="javax.swing.JButton" binding="backButton" default-binding="true">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="10" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-1052948"/>
@@ -83,7 +74,7 @@
       </component>
       <component id="962a5" class="javax.swing.JButton" binding="addBTN">
         <constraints>
-          <grid row="6" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-1052948"/>
@@ -126,16 +117,6 @@
           <foreground color="-16777216"/>
         </properties>
       </component>
-      <component id="966fd" class="javax.swing.JButton" binding="studentsBTN">
-        <constraints>
-          <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-1052948"/>
-          <foreground color="-16777216"/>
-          <text value="Alunos"/>
-        </properties>
-      </component>
       <hspacer id="8773f">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -146,6 +127,36 @@
           <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
+      <component id="966fd" class="javax.swing.JButton" binding="addStudentsBTN">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1052948"/>
+          <foreground color="-16777216"/>
+          <text value="Adicionar Aluno"/>
+        </properties>
+      </component>
+      <component id="18da5" class="javax.swing.JButton" binding="removeStudentsBTN">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1052948"/>
+          <foreground color="-16777216"/>
+          <text value="Remover Aluno"/>
+        </properties>
+      </component>
+      <vspacer id="7ea5c">
+        <constraints>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="d8dad">
+        <constraints>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
     </children>
   </grid>
 </form>
