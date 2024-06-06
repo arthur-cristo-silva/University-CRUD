@@ -27,7 +27,7 @@ public class StudentDAO {
                 studentPs.setInt(5, student.getAbsences());
                 studentPs.executeUpdate();
             }
-        } 
+        }
     }
 
     // Retorna todos os alunos cadastrados
@@ -55,7 +55,7 @@ public class StudentDAO {
                 student.setAbsences(rs.getInt("absences"));
                 students.add(student);
             }
-        } 
+        }
         return students;
     }
 
@@ -115,7 +115,7 @@ public class StudentDAO {
         List<Student> students = new ArrayList<>();
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, "%"+name+"%");
+            ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Student student = new Student();
@@ -162,7 +162,35 @@ public class StudentDAO {
             studentPs.setLong(1, ra);
             studentPs.executeUpdate();
             personPs.executeUpdate();
-        } 
+        }
     }
+
+    // if aux == true  return students out of class, else return in class
+    public static List<Student> getStudentsClass(String class_code, boolean aux) throws SQLException {
+        String sql = aux ? "SELECT pe.ra, pe.name, s.course " +
+                "FROM people AS pe " +
+                "INNER JOIN students s ON pe.ra = s.ra " +
+                "LEFT JOIN students_class sc ON pe.ra = sc.student_ra AND sc.class_code = ? " +
+                "WHERE sc.student_ra IS NULL" :
+                "SELECT pe.ra, pe.name, s.course " +
+                        "FROM people AS pe " +
+                        "INNER JOIN students s ON pe.ra = s.ra " +
+                        "LEFT JOIN students_class sc ON pe.ra = sc.student_ra AND sc.class_code = ? " +
+                        "WHERE sc.student_ra IS NOT NULL";
+        List<Student> students = new ArrayList<>();
+        try (Connection con = ConnectionFactory.createConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, class_code);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Student student = new Student();
+                student.setRa(rs.getLong("ra"));
+                student.setName(rs.getString("name"));
+                student.setCourse(rs.getString("course"));
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
 }
 
