@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="tembo.io" uuid="5fd1b77d-b363-4c16-baca-a04bf740457c">
+    <data-source source="LOCAL" name="postgres@tirelessly-measured-raptor.data-1.use1.tembo.io" uuid="ff626e66-89cd-4a69-be47-d399167baabd">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

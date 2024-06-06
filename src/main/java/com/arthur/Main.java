@@ -10,7 +10,7 @@ public class Main {
         try {
             new MainFrame();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Um erro ocorreu.");
+            JOptionPane.showMessageDialog(null, "Desculpe, ocorreu um erro inesperado.");
         }
     }
 }

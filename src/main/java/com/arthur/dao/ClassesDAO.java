@@ -66,21 +66,21 @@ public class ClassesDAO {
         return classes;
     }
 
-    public static void addStudent(String code, String ra) throws SQLException {
-        String studentClassSql = "INSERT INTO student_classes(classes_code, student_class_name) VALUES(?, ?)";
+    public static void addStudent(String code, long ra) throws SQLException {
+        String studentClassSql = "INSERT INTO students_class(class_code, student_ra) VALUES(?, ?)";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement studentPs = con.prepareStatement(studentClassSql)) {
             studentPs.setString(1, code);
-            studentPs.setString(2, ra);
+            studentPs.setLong(2, ra);
             studentPs.executeUpdate();
         }
     }
 
-    public static void removeStudent(String code, String student) throws SQLException {
-        String studentClassSql = "DELETE FROM student_classes WHERE student_ra = ? AND classes_code = ?";
+    public static void removeStudent(String code, long student) throws SQLException {
+        String studentClassSql = "DELETE FROM students_class WHERE student_ra = ? AND class_code = ?";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement classPs = con.prepareStatement(studentClassSql)) {
-            classPs.setString(1, student);
+            classPs.setLong(1, student);
             classPs.setString(2, code);
             classPs.executeUpdate();
         }
