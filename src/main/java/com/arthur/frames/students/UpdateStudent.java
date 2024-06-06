@@ -56,6 +56,8 @@ public class UpdateStudent  extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
             } catch (InputMismatchException f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
+            } catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em faltas.");
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }

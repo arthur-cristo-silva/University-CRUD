@@ -1,6 +1,5 @@
 package com.arthur;
 
-import com.arthur.factory.ConnectionFactory;
 import com.arthur.frames.MainFrame;
 
 import javax.swing.*;
