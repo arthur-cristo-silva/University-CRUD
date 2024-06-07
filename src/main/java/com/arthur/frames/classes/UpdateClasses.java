@@ -9,7 +9,6 @@ import com.arthur.entity.Uc;
 
 import javax.swing.*;
 import java.sql.SQLException;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +47,6 @@ public class UpdateClasses extends JFrame {
             setVisible(true);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
-            System.out.println(e);
         }
         addBTN.addActionListener(e -> {
             try {
@@ -58,7 +56,6 @@ public class UpdateClasses extends JFrame {
                 dispose();
             } catch (SQLException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar turma no banco de dados.");
-                g.printStackTrace();
             } catch (Exception h) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }

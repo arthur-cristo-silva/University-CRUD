@@ -12,9 +12,6 @@ public class AddUc extends JFrame {
     // Elementos da janela
     private JLabel titleTXT;
     private JTextField nameInput;
-    private JTextField periodInput;
-    private JTextField absencesInput;
-    private JComboBox scheduleInput;
     private JTextField typeInput;
     private JButton addBTN;
     private JButton backButton;

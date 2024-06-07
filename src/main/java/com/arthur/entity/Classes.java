@@ -18,14 +18,6 @@ public class Classes {
         this.uc = uc;
     }
 
-    public Classes(String code, String professorName, String ucName, String ucType, Long amountOfStudents) {
-        this.code = code;
-        this.professorName = professorName;
-        this.ucName = ucName;
-        this.ucType = ucType;
-        this.amountOfStudents = amountOfStudents;
-    }
-
     public String getCode() {
         return code;
     }

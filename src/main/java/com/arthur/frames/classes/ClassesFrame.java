@@ -1,8 +1,6 @@
 package com.arthur.frames.classes;
 
 import com.arthur.dao.ClassesDAO;
-import com.arthur.dao.ProfessorDAO;
-import com.arthur.dao.UcDAO;
 import com.arthur.entity.Classes;
 import com.arthur.excepction.ClassNotFound;
 import com.arthur.frames.MainFrame;
@@ -58,10 +56,8 @@ public class ClassesFrame extends JFrame {
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
                 System.out.println(f);
-                f.printStackTrace();
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
-                f.printStackTrace();
             }
         });
         // Deleta do banco de dados turmas selecionada
@@ -123,7 +119,6 @@ public class ClassesFrame extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
-                System.out.println(f);
             }
         });
 
@@ -136,7 +131,6 @@ public class ClassesFrame extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
-                System.out.println(f);
             }
         });
         removeStudentsBTN.addActionListener(e -> {

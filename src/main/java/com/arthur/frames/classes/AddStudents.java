@@ -36,7 +36,6 @@ public class AddStudents extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
-                System.out.println(f);
             }
         });
         backBTN.addActionListener(e -> {

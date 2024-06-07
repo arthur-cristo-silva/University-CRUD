@@ -12,7 +12,6 @@ public class UpdateUc extends JFrame {
     // Elementos da janela
     private JLabel titleTXT;
     private JTextField nameInput;
-    private JTextField courseInput;
     private JButton addBTN;
     private JButton backButton;
     private JPanel mainPanel;

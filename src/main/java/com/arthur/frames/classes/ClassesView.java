@@ -1,16 +1,7 @@
 package com.arthur.frames.classes;
 
-import com.arthur.dao.ProfessorDAO;
 import com.arthur.dao.StudentDAO;
-import com.arthur.dao.UcDAO;
-import com.arthur.entity.Classes;
-import com.arthur.entity.Professor;
 import com.arthur.entity.Student;
-import com.arthur.excepction.ProfessorNotFound;
-import com.arthur.factory.RandomProfessor;
-import com.arthur.frames.MainFrame;
-import com.arthur.frames.professors.AddProfessor;
-import com.arthur.frames.professors.UpdateProfessor;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
