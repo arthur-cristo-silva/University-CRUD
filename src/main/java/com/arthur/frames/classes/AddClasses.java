@@ -9,6 +9,7 @@ import com.arthur.entity.Uc;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +35,6 @@ public class AddClasses extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
         setLocationRelativeTo(null);
-        setVisible(true);
         try {
             List<Professor> professors = ProfessorDAO.findAll();
             for (Professor professor : professors) {
@@ -47,6 +47,7 @@ public class AddClasses extends JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
         }
+        setVisible(true);
         addBTN.addActionListener(e -> {
             try {
                 ClassesDAO.save(getClasses());
@@ -55,10 +56,10 @@ public class AddClasses extends JFrame {
                 dispose();
             } catch (SQLException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar turma no banco de dados.");
-                throw new RuntimeException(g);
+            } catch (InputMismatchException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, digite um código para a turma.");
             } catch (Exception h) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
             }
         });
         // Volta para a janela anterior
@@ -74,7 +75,7 @@ public class AddClasses extends JFrame {
         String uc = Objects.requireNonNull(ucCB.getSelectedItem()).toString();
         long prof = ProfessorDAO.getRaByName(Objects.requireNonNull(professorCB.getSelectedItem()).toString());
         if (code.isEmpty()) {
-            throw new Exception();
+            throw new InputMismatchException();
         }
         return new Classes(code, prof, uc);
     }

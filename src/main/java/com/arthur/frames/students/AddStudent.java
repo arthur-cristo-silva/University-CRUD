@@ -51,7 +51,7 @@ public class AddStudent  extends JFrame {
             } catch (InputMismatchException f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (NumberFormatException f) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em faltas.");
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em semestres e faltas.");
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }

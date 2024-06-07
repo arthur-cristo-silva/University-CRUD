@@ -43,7 +43,6 @@ public class AddUc extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
-                f.printStackTrace();
             }
         });
         // Volta para a janela anterior

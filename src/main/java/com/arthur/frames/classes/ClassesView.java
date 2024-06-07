@@ -1,43 +1,42 @@
 package com.arthur.frames.classes;
 
-import com.arthur.dao.ClassesDAO;
+import com.arthur.dao.ProfessorDAO;
 import com.arthur.dao.StudentDAO;
+import com.arthur.dao.UcDAO;
+import com.arthur.entity.Classes;
+import com.arthur.entity.Professor;
 import com.arthur.entity.Student;
+import com.arthur.excepction.ProfessorNotFound;
+import com.arthur.factory.RandomProfessor;
+import com.arthur.frames.MainFrame;
+import com.arthur.frames.professors.AddProfessor;
+import com.arthur.frames.professors.UpdateProfessor;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.util.List;
 
-public class RemoveStudents extends JFrame {
-    private JPanel mainPanel;
-    private JLabel titleTXT;
-    private JButton addBTN;
-    private JTable table1;
-    private JButton backBTN;
-    private JScrollPane jScroll;
+public class ClassesView extends JFrame {
 
-    public RemoveStudents(String code) {
+    private JPanel mainPanel;
+    private JTable table1;
+    private JScrollPane jScroll;
+    private JButton backBTN;
+    private JLabel ucTXT;
+    private JLabel profTXT;
+
+    public ClassesView(String code, String uc, String prof) {
         setContentPane(mainPanel);
-        setTitle("Remover Aluno");
+        setTitle("Turma " + code);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
+        ucTXT.setText(uc);
+        profTXT.setText("Professor(a): " + prof);
         getAll(code);
         setVisible(true);
-        addBTN.addActionListener(e -> {
-            try {
-                ClassesDAO.removeStudent(code, Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString()));
-                String name = table1.getModel().getValueAt(table1.getSelectedRow(), 1).toString();
-                JOptionPane.showMessageDialog(mainPanel, "Aluno " + name + " removido.");
-                getAll(code);
-            } catch (SQLException f) {
-                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
-            } catch (ArrayIndexOutOfBoundsException f) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
-            }
-        });
         backBTN.addActionListener(e -> {
             new ClassesFrame();
             dispose();

@@ -40,8 +40,8 @@ public class StudentsFrame extends JFrame {
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setVisible(true);
         getAll();
+        setVisible(true);
         // Vai para janela de criação de aluno
         addBTN.addActionListener(e -> {
             new AddStudent();

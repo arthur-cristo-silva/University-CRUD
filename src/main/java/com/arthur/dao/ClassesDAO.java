@@ -26,7 +26,7 @@ public class ClassesDAO {
     public static void update(Classes classes) throws SQLException {
         String sql = "UPDATE classes SET professor_ra = ?, discipline_code = ? WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
-        PreparedStatement classPs = con.prepareStatement(sql)) {
+             PreparedStatement classPs = con.prepareStatement(sql)) {
             classPs.setLong(1, classes.getProfessor());
             classPs.setString(2, classes.getUc());
             classPs.setString(3, classes.getCode());
@@ -34,26 +34,50 @@ public class ClassesDAO {
         }
     }
 
-    public static int count(String code) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM students_class WHERE class_code = ?";
-        int count = 0;
-        try (Connection con = ConnectionFactory.createConnection();
-        PreparedStatement classPs = con.prepareStatement(sql)) {
-            classPs.setString(1, code);
-            try (ResultSet rs = classPs.executeQuery()) {
-                if (rs.next()) {
-                    count = rs.getInt(1);
-                }
+    public static List<Classes> findAll() throws SQLException {
+        List<Classes> list = new ArrayList<>();
+        String sql = "SELECT " +
+                "    c.code, " +
+                "    d.name AS ucName, " +
+                "    d.type AS ucType, " +
+                "    p.name AS professorName, " +
+                "    (SELECT COUNT(*) FROM students_class sc WHERE sc.class_code = c.code) AS studentCount " +
+                "FROM " +
+                "    classes c " +
+                "        JOIN " +
+                "    disciplines d ON c.discipline_code = d.code " +
+                "        JOIN " +
+                "    people p ON c.professor_ra = p.ra";
+        try (Connection con = ConnectionFactory.createConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Classes classes = new Classes();
+                classes.setCode(rs.getString(1));
+                classes.setUcName(rs.getString(2));
+                classes.setUcType(rs.getString(3));
+                classes.setProfessorName(rs.getString(4));
+                classes.setAmountOfStudents(rs.getLong(5));
+                list.add(classes);
             }
         }
-        return count;
+        return list;
     }
 
-    public static Classes getByCode(String code) throws SQLException {
+    public static Classes getByCodeToUpdt(String code) throws SQLException {
         Classes classes = new Classes();
-        String classesSql = "SELECT * FROM classes WHERE code = ?";
+        String sql = "SELECT " +
+                "    c.code, " +
+                "    d.code AS uc, " +
+                "    p.ra AS professorRa " +
+                "FROM " +
+                "    classes c " +
+                "        JOIN " +
+                "    disciplines d ON c.discipline_code = d.code " +
+                "        JOIN " +
+                "    people p ON c.professor_ra = p.ra " +
+                "WHERE c.code = ? ";
         try (Connection con = ConnectionFactory.createConnection();
-             PreparedStatement ps = con.prepareStatement(classesSql)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, code);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -62,7 +86,38 @@ public class ClassesDAO {
                     classes.setProfessor(rs.getLong(3));
                 }
             }
-        } 
+        }
+        return classes;
+    }
+
+    public static Classes getByCode(String code) throws SQLException {
+        Classes classes = new Classes();
+        String sql = "SELECT " +
+                "    c.code, " +
+                "    d.name AS ucName, " +
+                "    d.type AS ucType, " +
+                "    p.name AS professorName, " +
+                "    (SELECT COUNT(*) FROM students_class sc WHERE sc.class_code = c.code) AS studentCount " +
+                "FROM " +
+                "    classes c " +
+                "        JOIN " +
+                "    disciplines d ON c.discipline_code = d.code " +
+                "        JOIN " +
+                "    people p ON c.professor_ra = p.ra " +
+                "WHERE c.code = ? ";
+        try (Connection con = ConnectionFactory.createConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, code);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    classes.setCode(rs.getString(1));
+                    classes.setUcName(rs.getString(2));
+                    classes.setUcType(rs.getString(3));
+                    classes.setProfessorName(rs.getString(4));
+                    classes.setAmountOfStudents(rs.getLong(5));
+                }
+            }
+        }
         return classes;
     }
 
@@ -97,22 +152,5 @@ public class ClassesDAO {
             studentPs.setString(1, code);
             studentPs.executeUpdate();
         }
-    }
-
-    public static List<Classes> getAll() throws SQLException {
-        String sql = "SELECT * FROM classes";
-        List<Classes> list = new ArrayList<>();
-        try(Connection con = ConnectionFactory.createConnection();
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery()) {
-            while(rs.next()) {
-                Classes classes = new Classes();
-                classes.setCode(rs.getString(1));
-                classes.setUc(rs.getString(2));
-                classes.setProfessor(rs.getLong(3));
-                list.add(classes);
-            }
-        }
-        return list;
     }
 }

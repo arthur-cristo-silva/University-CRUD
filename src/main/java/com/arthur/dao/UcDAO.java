@@ -83,6 +83,7 @@ public class UcDAO {
             ps.setString(1, uc.getName());
             ps.setString(2, uc.getType());
             ps.setString(3, uc.getCode());
+            ps.executeUpdate();
         }
     }
 
@@ -96,7 +97,7 @@ public class UcDAO {
     }
 
     public static String getNameByCode(String code) throws SQLException {
-        String sql = "SELECT * FROM disciplines WHERE code = ?";
+        String sql = "SELECT name, type FROM disciplines WHERE code = ?";
         try (Connection con = ConnectionFactory.createConnection();
         PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, code);

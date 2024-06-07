@@ -170,10 +170,9 @@ public class ProfessorDAO {
     }
 
     public static String getNameByRa(long ra) throws SQLException {
-        String sql = "SELECT p.ra, pe.name " +
-                "FROM professors AS p " +
-                "INNER JOIN people AS pe ON p.ra = pe.ra " +
-                "WHERE pe.ra = ?";
+        String sql = "SELECT name " +
+                "FROM people " +
+                "WHERE ra = ?";
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setLong(1, ra);

@@ -39,8 +39,8 @@ public class ProfessorsFrame extends JFrame {
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setVisible(true);
         getAll();
+        setVisible(true);
         // Vai para janela de criação de professor
         addBTN.addActionListener(e -> {
             new AddProfessor();

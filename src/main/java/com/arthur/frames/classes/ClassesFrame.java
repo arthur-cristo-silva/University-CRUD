@@ -25,6 +25,9 @@ public class ClassesFrame extends JFrame {
     private JButton backBTN;
     private JButton getAllBTN;
     private JTextField searchInput;
+    private JButton viewBTN;
+    private JButton addStudentsBTN;
+    private JButton removeStudentsBTN;
     private JSpinner spinner1;
     private JScrollPane scrollPane;
 
@@ -36,8 +39,8 @@ public class ClassesFrame extends JFrame {
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setVisible(true);
         getAll();
+        setVisible(true);
         // Vai para janela de criação de turmas
         addBTN.addActionListener(e -> {
             new AddClasses();
@@ -47,15 +50,18 @@ public class ClassesFrame extends JFrame {
         updateBTN.addActionListener(e -> {
             try {
                 String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
-                Classes classes = ClassesDAO.getByCode(code);
+                Classes classes = ClassesDAO.getByCodeToUpdt(code);
                 new UpdateClasses(classes);
                 dispose();
             } catch (ArrayIndexOutOfBoundsException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+                System.out.println(f);
+                f.printStackTrace();
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
+                f.printStackTrace();
             }
         });
         // Deleta do banco de dados turmas selecionada
@@ -88,9 +94,9 @@ public class ClassesFrame extends JFrame {
                 String[] col = new String[]{"Código", "UC", "Professor", "Alunos"};
                 Object[][] data = new Object[1][col.length];
                 data[0][0] = classes.getCode();
-                data[0][1] = UcDAO.getNameByCode(classes.getUc());
-                data[0][2] = ProfessorDAO.getNameByRa(classes.getProfessor());
-                data[0][3] = ClassesDAO.count(classes.getCode());
+                data[0][1] = classes.getUcName() + " " + classes.getUcType();
+                data[0][2] = classes.getProfessorName();
+                data[0][3] = classes.getAmountOfStudents();
                 table1.setModel(new DefaultTableModel(data, col));
                 table1.setDefaultEditor(Object.class, null);
             } catch (ClassNotFound f) {
@@ -105,6 +111,46 @@ public class ClassesFrame extends JFrame {
         // Exibe todas as turmas
         getAllBTN.addActionListener(e -> getAll());
 
+        // Exibe uma turma
+        viewBTN.addActionListener(e -> {
+            try {
+                String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
+                String uc = table1.getModel().getValueAt(table1.getSelectedRow(), 1).toString();
+                String prof = table1.getModel().getValueAt(table1.getSelectedRow(), 2).toString();
+                new ClassesView(code, uc, prof);
+                dispose();
+            } catch (ArrayIndexOutOfBoundsException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
+                System.out.println(f);
+            }
+        });
+
+        addStudentsBTN.addActionListener(e -> {
+            try {
+                String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
+                new AddStudents(code);
+                dispose();
+            } catch (ArrayIndexOutOfBoundsException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
+                System.out.println(f);
+            }
+        });
+        removeStudentsBTN.addActionListener(e -> {
+            try {
+                String code = table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString();
+                new RemoveStudents(code);
+                dispose();
+            } catch (ArrayIndexOutOfBoundsException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione uma turma.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
+            }
+        });
+
         // Volta para a janela anterior
         backBTN.addActionListener(e -> {
             new MainFrame();
@@ -115,20 +161,20 @@ public class ClassesFrame extends JFrame {
     // Exibe todos as turmas
     private void getAll() {
         try {
-            List<Classes> classes;
-            classes = ClassesDAO.getAll();
+            List<Classes> classes = ClassesDAO.findAll();
             String[] col = new String[]{"Código", "UC", "Professor", "Alunos"};
             Object[][] data = new Object[classes.size()][col.length];
             for (int i = 0; i < classes.size(); i++) {
                 data[i][0] = classes.get(i).getCode();
-                data[i][1] = UcDAO.getNameByCode(classes.get(i).getUc());
-                data[i][2] = ProfessorDAO.getNameByRa(classes.get(i).getProfessor());
-                data[i][3] = ClassesDAO.count(classes.get(i).getCode());
+                data[i][1] = classes.get(i).getUcName() +  " " + classes.get(i).getUcType();
+                data[i][2] = classes.get(i).getProfessorName();
+                data[i][3] = classes.get(i).getAmountOfStudents();
             }
             table1.setModel(new DefaultTableModel(data, col));
             table1.setDefaultEditor(Object.class, null);
         } catch (SQLException f) {
             JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            System.out.println(f.getMessage());
         } catch (Exception f) {
             JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
         }

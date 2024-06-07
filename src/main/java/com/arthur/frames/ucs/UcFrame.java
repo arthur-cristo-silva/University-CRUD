@@ -39,8 +39,8 @@ public class UcFrame extends JFrame {
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setVisible(true);
         getAll();
+        setVisible(true);
         // Vai para janela de criação de UC
         addBTN.addActionListener(e -> {
             new AddUc();

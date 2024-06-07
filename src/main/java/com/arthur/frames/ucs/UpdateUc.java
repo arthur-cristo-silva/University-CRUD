@@ -34,7 +34,7 @@ public class UpdateUc extends JFrame {
         typeInput.setText(uc.getType());
         addBTN.addActionListener(e -> {
             try {
-                UcDAO.update(Uc.getUc(nameInput.getText(), typeInput.getText()));
+                UcDAO.update(Uc.getUc(uc.getCode(), nameInput.getText(), typeInput.getText()));
                 JOptionPane.showMessageDialog(mainPanel, "UC atualizada!");
                 new UcFrame();
                 dispose();
@@ -44,7 +44,6 @@ public class UpdateUc extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
             } catch (Exception f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
-                f.printStackTrace();
             }
         });
         // Volta para janela anterior

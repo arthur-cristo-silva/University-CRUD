@@ -29,6 +29,15 @@ public class Uc {
         return new Uc(code, name, type);
     }
 
+    public static Uc getUc(String code, String name, String type) throws InputMismatchException {
+        if (name.isEmpty()) {
+            throw new InputMismatchException("Por favor, informe o nome da UC.");
+        } else if (type.isEmpty()) {
+            throw new InputMismatchException("Por favor, informe o tipo da UC.");
+        }
+        return new Uc(code, name, type);
+    }
+
     public String getCode() {
         return code;
     }
@@ -52,4 +61,7 @@ public class Uc {
     public void setType(String type) {
         this.type = type;
     }
+
+
+
 }

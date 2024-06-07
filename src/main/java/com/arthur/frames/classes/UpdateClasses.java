@@ -9,6 +9,7 @@ import com.arthur.entity.Uc;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,12 +22,9 @@ public class UpdateClasses extends JFrame {
     private JTextField codeInput;
     private JComboBox<String> ucCB;
     private JComboBox<String> professorCB;
-    private JButton addStudentsBTN;
     private JLabel professorTXT;
     private JLabel ucTXT;
-    private JLabel nameTXT;
     private JLabel titleTXT;
-    private JButton removeStudentsBTN;
 
     // Atualiza informações de turma do banco de dados
     public UpdateClasses(Classes classes) {
@@ -36,38 +34,33 @@ public class UpdateClasses extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setResizable(false);
         setLocationRelativeTo(null);
-        setVisible(true);
-        codeInput.setText(classes.getCode());
         try {
             List<Professor> professors = ProfessorDAO.findAll();
             for (Professor professor : professors) {
                 professorCB.addItem(professor.getName());
             }
+            professorCB.setSelectedItem(ProfessorDAO.getNameByRa(classes.getProfessor()));
             List<Uc> ucs = UcDAO.getAll();
             for (Uc uc : ucs) {
                 ucCB.addItem(uc.getCode());
             }
+            ucCB.setSelectedItem(classes.getUc());
+            setVisible(true);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
-        }
-        // Preenche nos inputs a uc e professor do turma
-        ucCB.setSelectedItem(classes.getUc());
-        try {
-            professorCB.setSelectedItem(ProfessorDAO.getNameByRa(classes.getProfessor()));
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
+            System.out.println(e);
         }
         addBTN.addActionListener(e -> {
             try {
-                ClassesDAO.update(getClasses());
+                ClassesDAO.update(getClasses(classes.getCode()));
                 JOptionPane.showMessageDialog(mainPanel, "Turma atualizada!");
                 new ClassesFrame();
                 dispose();
             } catch (SQLException g) {
                 JOptionPane.showMessageDialog(mainPanel, "Erro ao atualizar turma no banco de dados.");
+                g.printStackTrace();
             } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
-                throw new RuntimeException(h);
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro inesperado.");
             }
         });
         // Volta para janela anterior
@@ -75,24 +68,12 @@ public class UpdateClasses extends JFrame {
             new ClassesFrame();
             dispose();
         });
-        addStudentsBTN.addActionListener(e -> {
-            new AddStudents(classes.getCode());
-            dispose();
-        });
-        removeStudentsBTN.addActionListener(e -> {
-            new RemoveStudents(classes.getCode());
-            dispose();
-        });
     }
 
     // Metodo para colher informações da UC
-    private Classes getClasses() throws Exception {
-        String code = codeInput.getText();
+    private Classes getClasses(String code) throws Exception {
         String uc = Objects.requireNonNull(ucCB.getSelectedItem()).toString();
         long professor = ProfessorDAO.getRaByName(Objects.requireNonNull(professorCB.getSelectedItem()).toString());
-        if (code.isEmpty()) {
-            throw new Exception();
-        }
         return new Classes(code, professor, uc);
     }
 }

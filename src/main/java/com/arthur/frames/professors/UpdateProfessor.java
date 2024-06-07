@@ -42,12 +42,14 @@ public class UpdateProfessor extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Professor atualizado!");
                 new ProfessorsFrame();
                 dispose();
-            } catch (SQLException g) {
+            } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
-            } catch (InputMismatchException | NumberFormatException f) {
+            } catch (InputMismatchException f) {
                 JOptionPane.showMessageDialog(mainPanel, f.getMessage());
-            } catch (Exception h) {
-                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira dados válidos.");
+            } catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, insira apenas números em carga horária.");
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(mainPanel, "Desculpe, um erro ocorreu inesperado.");
             }
         });
         // Voltar para janela anterior

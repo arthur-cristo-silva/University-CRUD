@@ -24,13 +24,16 @@ public class AddStudents extends JFrame {
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setVisible(true);
         getAll(code);
+        setVisible(true);
         addBTN.addActionListener(e -> {
             try {
                 ClassesDAO.addStudent(code, Long.parseLong(table1.getModel().getValueAt(table1.getSelectedRow(), 0).toString()));
-                JOptionPane.showMessageDialog(mainPanel, "Aluno adicionado!");
+                String name = table1.getModel().getValueAt(table1.getSelectedRow(), 1).toString();
+                JOptionPane.showMessageDialog(mainPanel, "Aluno " + name + " adicionado!");
                 getAll(code);
+            } catch (ArrayIndexOutOfBoundsException f) {
+                JOptionPane.showMessageDialog(mainPanel, "Por favor, selecione um aluno.");
             } catch (SQLException f) {
                 JOptionPane.showMessageDialog(mainPanel, "Desculpe, ocorreu um erro ao tentar se conectar com o banco de dados.");
                 System.out.println(f);
